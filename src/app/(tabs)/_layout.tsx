@@ -13,7 +13,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(home)"
         options={{
           tabBarIcon: ({ focused }) => <Ionicons name="home" size={24} color={focused ? 'black' : 'gray'} />,
         }}
@@ -49,6 +49,8 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <Ionicons name="person-outline" size={24} color={focused ? 'black' : 'gray'} />,
         }}
       />
+
+      <Tabs.Screen name="(posts)/[username]/posts/[postId]" options={{ href: null }} />
     </Tabs>
   );
 }

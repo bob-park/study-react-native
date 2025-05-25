@@ -1,7 +1,7 @@
 import TabMenu, { TabMenuItem } from '@/components/menu/TabMenu';
 
 import { usePathname, useRouter } from 'expo-router';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Index() {
   // hooks
@@ -10,26 +10,27 @@ export default function Index() {
 
   return (
     <View className="flex size-full flex-col items-center gap-2">
-      {/* header menu */}
+      <ScrollView className="w-full">
+        {/* header menu */}
+        <View className="">
+          <TabMenu>
+            <TabMenuItem text="추천" active={pathname === '/'} onPress={() => router.push('/')} />
+            <TabMenuItem text="팔로잉" active={pathname === '/following'} onPress={() => router.push('/following')} />
+          </TabMenu>
+        </View>
 
-      <View className="mt-20">
-        <TabMenu>
-          <TabMenuItem text="추천" active={pathname === '/'} onPress={() => router.push('/')} />
-          <TabMenuItem text="팔로잉" active={pathname === '/following'} onPress={() => router.push('/following')} />
-        </TabMenu>
-      </View>
+        <View className="h-[900px]">
+          <TouchableOpacity onPress={() => router.push('/[username]/posts/1')}>
+            <Text>post1</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View>
-        <TouchableOpacity onPress={() => router.push('/[username]/posts/1')}>
-          <Text>post1</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        <TouchableOpacity onPress={() => router.push('/[username]/posts/2')}>
-          <Text>post2</Text>
-        </TouchableOpacity>
-      </View>
+        <View>
+          <TouchableOpacity onPress={() => router.push('/[username]/posts/2')}>
+            <Text>post2</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }

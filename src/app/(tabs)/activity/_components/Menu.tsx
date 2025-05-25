@@ -27,6 +27,7 @@ export function ActivityMenuItem({ active = false, text, onPress }: ActivityMenu
         className={cx('w-full items-center rounded-full border-2 border-gray-300 px-4', {
           'bg-gray-300': active,
         })}
+        activeOpacity={0.8}
         onPress={handleClick}
       >
         <Text className={cx('text-base')}>{text}</Text>

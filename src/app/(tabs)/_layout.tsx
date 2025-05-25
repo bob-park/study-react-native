@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
+import logo from '@/assets/images/logo.png';
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { Tabs, useRouter } from 'expo-router';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 
 export default function TabLayout() {
   // state
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   const [isLoginModelOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   // hooks
@@ -33,6 +35,27 @@ export default function TabLayout() {
 
   return (
     <>
+      {/* logo */}
+      <BlurView
+        className="relative mt-16 flex h-12 flex-row items-center justify-center gap-2"
+        intensity={50}
+        experimentalBlurMethod="dimezisBlurView"
+      >
+        <TouchableOpacity onPress={() => router.push('/')}>
+          <Image className="size-10" source={logo} alt="logo" />
+        </TouchableOpacity>
+
+        <View className="absolute right-4 top-2">
+          <TouchableOpacity
+            className="h-8 w-16 items-center justify-center rounded-lg bg-black"
+            onPress={openLoginModal}
+          >
+            <Text className="font-bold text-white">로그인</Text>
+          </TouchableOpacity>
+        </View>
+      </BlurView>
+
+      {/* tabs */}
       <Tabs
         backBehavior="history" // default 가 initial route 이기 때문에 뒤로가기 하면 home 으로 감
         screenOptions={{

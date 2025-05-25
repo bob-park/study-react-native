@@ -8,6 +8,9 @@
       ],
       "@/global.css": [
         "./global.css"
+      ],
+      "@/assets/*": [
+        "./assets/*"
       ]
     }
   },
@@ -16,6 +19,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
+    "image.d.ts"
   ]
 }

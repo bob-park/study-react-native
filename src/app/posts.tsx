@@ -106,7 +106,7 @@ export default function PostsModal() {
   return (
     <View className="mt-5 flex size-full flex-col items-center gap-2">
       {/* headers */}
-      <View className="relative flex w-full flex-row items-center justify-center gap-2">
+      <View className="relative flex h-12 w-full flex-none flex-row items-center justify-center gap-2">
         <View className="items-center justify-center">
           <Text className="text-xl font-bold">새로운 스레드</Text>
         </View>
@@ -120,7 +120,7 @@ export default function PostsModal() {
 
       {/* contents */}
       <FlatList
-        className="-z-10 mt-3 w-full"
+        className="w-full overflow-visible"
         data={threads}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -137,7 +137,7 @@ export default function PostsModal() {
       />
 
       {/* actions */}
-      <View className="absolute bottom-14 flex w-full flex-row-reverse items-center justify-center gap-2">
+      <View className="absolute bottom-14 flex h-12 w-full flex-none flex-row-reverse items-center justify-center gap-2">
         <Pressable
           className={cx(
             'mr-5 h-10 w-24 flex-none items-center justify-center rounded-full',
@@ -215,6 +215,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
     }
 
     setHashtags(tags);
+    setShowSelectTags(false);
   };
 
   return (
@@ -246,7 +247,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
             <View className="">
               <Text className="font-semibold">{thread.userId}</Text>
             </View>
-            <View className="relative flex flex-row items-center justify-start gap-3">
+            <View className="flex flex-row items-center justify-start gap-3">
               <Octicons name="chevron-right" size={15} color="gray" />
               <TextInput
                 ref={tagRef}
@@ -257,9 +258,11 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
                 onFocus={() => setShowSelectTags(true)}
                 onBlur={() => setShowSelectTags(false)}
               />
-              <View className={cx('absolute left-2 top-6 z-50 h-80 w-56', showSelectTags ? 'visible' : 'hidden')}>
-                <HashtagDropDown onChange={(tag) => handleUpdateHashtags(tag)} />
-              </View>
+              {showSelectTags && (
+                <View className={cx('absolute left-2 top-6 z-[100] h-80 w-56')}>
+                  <HashtagDropDown onChange={(tag) => handleUpdateHashtags(tag)} />
+                </View>
+              )}
             </View>
           </View>
           <View className="w-full">
@@ -307,7 +310,7 @@ const AddThread = ({ posting = false, onAdd }: AddThreadProps) => {
   };
 
   return (
-    <View className="mx-10 my-2 flex flex-row items-center justify-center gap-2">
+    <View className="mx-10 my-2 flex size-full flex-row items-start justify-center gap-2">
       <View className="size-6 flex-none">
         <UserAvatar name="bob" />
       </View>

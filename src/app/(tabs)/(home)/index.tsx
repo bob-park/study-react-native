@@ -1,6 +1,5 @@
 import TabMenu, { TabMenuItem } from '@/components/menu/TabMenu';
 
-import cx from 'classnames';
 import { usePathname, useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -13,7 +12,7 @@ export default function Index() {
     <View className="flex size-full flex-col items-center gap-2">
       {/* header menu */}
 
-      <View className="mt-24">
+      <View className="mt-20">
         <TabMenu>
           <TabMenuItem text="추천" active={pathname === '/'} onPress={() => router.push('/')} />
           <TabMenuItem text="팔로잉" active={pathname === '/following'} onPress={() => router.push('/following')} />

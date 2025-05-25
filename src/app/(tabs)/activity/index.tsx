@@ -3,6 +3,8 @@ import NotFound from '@/app/+not-found';
 import { usePathname, useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 
+import ActivityMenu, { ActivityMenuItem } from './_components/Menu';
+
 export default function Index() {
   // hooks
   const router = useRouter();
@@ -23,41 +25,36 @@ export default function Index() {
   }
 
   return (
-    <View className="flex size-full flex-col items-center justify-center gap-2">
-      <View>
-        <TouchableOpacity onPress={() => router.push('/activity')}>
-          <Text>All</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        <TouchableOpacity onPress={() => router.push('/activity/follows')}>
-          <Text>Follows</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        <TouchableOpacity onPress={() => router.push('/activity/replies')}>
-          <Text>Replies</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        <TouchableOpacity onPress={() => router.push('/activity/mentions')}>
-          <Text>Mentions</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        <TouchableOpacity onPress={() => router.push('/activity/reposts')}>
-          <Text>Reposts</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        <TouchableOpacity onPress={() => router.push('/activity/verified')}>
-          <Text>Verified</Text>
-        </TouchableOpacity>
+    <View className="flex size-full flex-col items-center gap-2">
+      <View className="mt-20 w-full border-b-2 border-gray-300 pb-2">
+        <ActivityMenu>
+          <ActivityMenuItem text="모두" active={pathname === '/activity'} onPress={() => router.push('/activity')} />
+          <ActivityMenuItem
+            text="요청"
+            active={pathname === '/activity/follows'}
+            onPress={() => router.push('/activity/follows')}
+          />
+          <ActivityMenuItem
+            text="답글"
+            active={pathname === '/activity/replies'}
+            onPress={() => router.push('/activity/replies')}
+          />
+          <ActivityMenuItem
+            text="언급"
+            active={pathname === '/activity/mentions'}
+            onPress={() => router.push('/activity/mentions')}
+          />
+          <ActivityMenuItem
+            text="인용"
+            active={pathname === '/activity/verified'}
+            onPress={() => router.push('/activity/verified')}
+          />
+          <ActivityMenuItem
+            text="리포스트"
+            active={pathname === '/activity/reposts'}
+            onPress={() => router.push('/activity/reposts')}
+          />
+        </ActivityMenu>
       </View>
     </View>
   );

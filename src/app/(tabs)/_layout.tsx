@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import logo from '@/assets/images/logo.png';
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
-import { BlurView } from 'expo-blur';
 import { Tabs, useRouter } from 'expo-router';
 import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
@@ -70,11 +69,7 @@ export default function TabLayout() {
   return (
     <>
       {/* logo */}
-      <BlurView
-        className="relative mt-16 flex h-12 flex-row items-center justify-center gap-2"
-        intensity={50}
-        experimentalBlurMethod="dimezisBlurView"
-      >
+      <View className="relative mt-16 flex h-14 flex-row items-center justify-center gap-2">
         <TouchableOpacity onPress={() => router.push('/')}>
           <Image className="size-10" source={logo} alt="logo" />
         </TouchableOpacity>
@@ -87,7 +82,7 @@ export default function TabLayout() {
             <Text className="font-bold text-white">로그인</Text>
           </TouchableOpacity>
         </View>
-      </BlurView>
+      </View>
 
       {/* tabs */}
       <Tabs

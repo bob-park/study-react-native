@@ -16,6 +16,7 @@ export default function PostsModal() {
       userId: '_bob__park',
       text: '',
       imageUris: [],
+      hashTags: [],
       createdAt: new Date(),
     },
   ]);
@@ -48,6 +49,7 @@ export default function PostsModal() {
         userId: '_bob__park',
         text: '',
         imageUris: [],
+        hashTags: [],
         createdAt: new Date(),
       });
 
@@ -116,13 +118,14 @@ export default function PostsModal() {
           />
         )}
         ListFooterComponent={<AddThread posting={isPosting} onAdd={handleAddThread} />}
+        keyboardShouldPersistTaps="handled"
       />
 
       {/* actions */}
       <View className="absolute bottom-14 flex w-full flex-row-reverse items-center justify-center gap-2">
         <Pressable
           className={cx(
-            'mr-5 h-10 w-16 flex-none items-center justify-center rounded-full',
+            'mr-5 h-10 w-24 flex-none items-center justify-center rounded-full',
             isPosting ? 'bg-gray-400' : 'bg-black',
           )}
           disabled={isPosting}
@@ -153,8 +156,11 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
 
   // state
   const [post, setPost] = useState<string>(thread.text);
+  const [hashtags, setHashtags] = useState<string[]>([]);
 
   // useEffect
+  useEffect(() => {}, [thread]);
+
   useEffect(() => {
     if (!textRef.current) {
       return;
@@ -165,7 +171,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
 
   useEffect(() => {
     handleUpdate();
-  }, [post]);
+  }, [post, hashtags]);
 
   // handle
   const handleUpdate = () => {
@@ -174,6 +180,24 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
 
   const handleRemove = () => {
     onRemove && onRemove(thread.id);
+  };
+
+  const handleUpdateHashtags = (text: string) => {
+    const tags = new Array<string>();
+
+    const tokens = text.split(' ');
+
+    for (const token of tokens) {
+      const newTag = token.replace('#', '');
+
+      if (tags.includes(newTag)) {
+        continue;
+      }
+
+      tags.push(newTag);
+    }
+
+    setHashtags(tags);
   };
 
   return (
@@ -208,7 +232,12 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
               </View>
               <View className="flex flex-row items-center justify-start gap-3">
                 <Octicons name="chevron-right" size={15} color="gray" />
-                <Text className="font-semibold text-gray-400">주제 추가</Text>
+                <TextInput
+                  className="font-semibold text-gray-400"
+                  value={hashtags.map((hashtag) => `#${hashtag}`).join(' ')}
+                  placeholder="주제 추가"
+                  onChangeText={handleUpdateHashtags}
+                />
               </View>
             </View>
             <View className="w-full">

@@ -123,7 +123,7 @@ export default function TabLayout() {
               e.preventDefault();
 
               if (isLoggedIn) {
-                router.navigate('/modal');
+                router.navigate('/posts');
               } else {
                 openLoginModal();
               }

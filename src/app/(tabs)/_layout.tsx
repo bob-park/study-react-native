@@ -6,10 +6,20 @@ import { Modal, Text, TouchableOpacity, View } from 'react-native';
 
 export default function TabLayout() {
   // state
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   const [isLoginModelOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   // hooks
+  /**
+   * <pre>
+   *     router.push(..)
+   *       - 모든 history 에 저장
+   *     router.replace(..)
+   *       - 마지막꺼대체
+   *     router.navigate(..)
+   *       - 여러번 눌렀을 경우 중복을 제거하고 저장함
+   * </pre>
+   */
   const router = useRouter();
 
   // handle
@@ -24,6 +34,7 @@ export default function TabLayout() {
   return (
     <>
       <Tabs
+        backBehavior="history" // default 가 initial route 이기 때문에 뒤로가기 하면 home 으로 감
         screenOptions={{
           headerShown: false,
           tabBarLabel: () => null,

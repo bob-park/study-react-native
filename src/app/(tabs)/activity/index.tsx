@@ -32,27 +32,27 @@ export default function Index() {
           <ActivityMenuItem
             text="요청"
             active={pathname === '/activity/follows'}
-            onPress={() => router.push('/activity/follows')}
+            onPress={() => router.navigate('/activity/follows')}
           />
           <ActivityMenuItem
             text="답글"
             active={pathname === '/activity/replies'}
-            onPress={() => router.push('/activity/replies')}
+            onPress={() => router.navigate('/activity/replies')}
           />
           <ActivityMenuItem
             text="언급"
             active={pathname === '/activity/mentions'}
-            onPress={() => router.push('/activity/mentions')}
+            onPress={() => router.navigate('/activity/mentions')}
           />
           <ActivityMenuItem
             text="인용"
             active={pathname === '/activity/verified'}
-            onPress={() => router.push('/activity/verified')}
+            onPress={() => router.navigate('/activity/verified')}
           />
           <ActivityMenuItem
             text="리포스트"
             active={pathname === '/activity/reposts'}
-            onPress={() => router.push('/activity/reposts')}
+            onPress={() => router.navigate('/activity/reposts')}
           />
         </ActivityMenu>
       </View>

@@ -5,8 +5,23 @@ import UserAvatar from '@/components/user/UserAvatar';
 import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import cx from 'classnames';
 import { useRouter } from 'expo-router';
-import { FlatList, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
+
+const dummyTags = [
+  'java',
+  'java 30th',
+  'js',
+  'react',
+  '창업아이디어',
+  '하이에나',
+  '비행기표',
+  'AI',
+  '강의',
+  '인프런',
+  '운동하는직장인',
+  'Threads birthday',
+];
 
 export default function PostsModal() {
   // state
@@ -105,7 +120,7 @@ export default function PostsModal() {
 
       {/* contents */}
       <FlatList
-        className="mt-3 w-full"
+        className="-z-10 mt-3 w-full"
         data={threads}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -153,8 +168,10 @@ interface ThreadItemProps {
 const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }: ThreadItemProps) => {
   // ref
   const textRef = useRef<TextInput>(null);
+  const tagRef = useRef<TextInput>(null);
 
   // state
+  const [showSelectTags, setShowSelectTags] = useState<boolean>(false);
   const [post, setPost] = useState<string>(thread.text);
   const [hashtags, setHashtags] = useState<string[]>([]);
 
@@ -201,76 +218,80 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
   };
 
   return (
-    <>
-      <View className="relative mx-5 flex h-24 flex-row items-start justify-center gap-2">
-        {/* close */}
-        {!first && (
-          <View className="absolute right-3 top-0 size-6 flex-none">
-            <Pressable className="w-full" onPress={handleRemove}>
-              <AntDesign name="close" size={20} color="gray" />
-            </Pressable>
-          </View>
-        )}
+    <View className="relative mx-5 flex h-24 flex-row items-start justify-center gap-2">
+      {/* close */}
+      {!first && (
+        <View className="absolute right-3 top-0 size-6 flex-none">
+          <Pressable className="w-full" onPress={handleRemove}>
+            <AntDesign name="close" size={20} color="gray" />
+          </Pressable>
+        </View>
+      )}
 
-        {/* avatar */}
-        <View className="flex h-full flex-none flex-col items-center justify-center">
-          <View className="size-16 flex-none">
-            <UserAvatar name="bob" />
-          </View>
-
-          <View className="h-full flex-1">
-            <View className="h-full w-[1px] rounded-2xl border-[1px] border-gray-300"></View>
-          </View>
+      {/* avatar */}
+      <View className="flex h-full flex-none flex-col items-center justify-center">
+        <View className="size-16 flex-none">
+          <UserAvatar name="bob" />
         </View>
 
-        {/* contents */}
-        <View className="flex-1">
-          <View className="flex flex-col items-center justify-center gap-1">
-            <View className="flex w-full flex-row items-center justify-start gap-2">
-              <View className="">
-                <Text className="font-semibold">{thread.userId}</Text>
-              </View>
-              <View className="flex flex-row items-center justify-start gap-3">
-                <Octicons name="chevron-right" size={15} color="gray" />
-                <TextInput
-                  className="font-semibold text-gray-400"
-                  value={hashtags.map((hashtag) => `#${hashtag}`).join(' ')}
-                  placeholder="주제 추가"
-                  onChangeText={handleUpdateHashtags}
-                />
-              </View>
+        <View className="h-full flex-1">
+          <View className="h-full w-[1px] rounded-2xl border-[1px] border-gray-300"></View>
+        </View>
+      </View>
+
+      {/* contents */}
+      <View className="flex-1">
+        <View className="flex flex-col items-center justify-center gap-1">
+          <View className="flex w-full flex-row items-center justify-start gap-2">
+            <View className="">
+              <Text className="font-semibold">{thread.userId}</Text>
             </View>
-            <View className="w-full">
+            <View className="relative flex flex-row items-center justify-start gap-3">
+              <Octicons name="chevron-right" size={15} color="gray" />
               <TextInput
-                ref={textRef}
-                className="w-full"
-                multiline
-                placeholder="새로운 소식이 있나요?"
-                value={post}
-                onChangeText={(e) => setPost(e)}
+                ref={tagRef}
+                className="font-semibold text-gray-400"
+                value={hashtags.map((hashtag) => `#${hashtag}`).join(' ')}
+                placeholder="주제 추가"
+                onChangeText={handleUpdateHashtags}
+                onFocus={() => setShowSelectTags(true)}
+                onBlur={() => setShowSelectTags(false)}
               />
+              <View className={cx('absolute left-2 top-6 z-50 h-80 w-56', showSelectTags ? 'visible' : 'hidden')}>
+                <HashtagDropDown onChange={(tag) => handleUpdateHashtags(tag)} />
+              </View>
             </View>
-            <View className="flex w-full flex-row gap-3">
-              <Pressable className="">
-                <MaterialCommunityIcons name="image-multiple-outline" size={20} color="gray" />
-              </Pressable>
-              <Pressable className="">
-                <MaterialCommunityIcons name="file-gif-box" size={20} color="gray" />
-              </Pressable>
-              <Pressable className="">
-                <Entypo name="emoji-happy" size={20} color="gray" />
-              </Pressable>
-              <Pressable className="">
-                <MaterialCommunityIcons name="vote" size={20} color="gray" />
-              </Pressable>
-              <Pressable className="">
-                <Feather name="map-pin" size={20} color="gray" />
-              </Pressable>
-            </View>
+          </View>
+          <View className="w-full">
+            <TextInput
+              ref={textRef}
+              className="w-full"
+              multiline
+              placeholder="새로운 소식이 있나요?"
+              value={post}
+              onChangeText={(e) => setPost(e)}
+            />
+          </View>
+          <View className="flex w-full flex-row gap-3">
+            <Pressable className="">
+              <MaterialCommunityIcons name="image-multiple-outline" size={20} color="gray" />
+            </Pressable>
+            <Pressable className="">
+              <MaterialCommunityIcons name="file-gif-box" size={20} color="gray" />
+            </Pressable>
+            <Pressable className="">
+              <Entypo name="emoji-happy" size={20} color="gray" />
+            </Pressable>
+            <Pressable className="">
+              <MaterialCommunityIcons name="vote" size={20} color="gray" />
+            </Pressable>
+            <Pressable className="">
+              <Feather name="map-pin" size={20} color="gray" />
+            </Pressable>
           </View>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -296,5 +317,28 @@ const AddThread = ({ posting = false, onAdd }: AddThreadProps) => {
         </TouchableOpacity>
       </View>
     </View>
+  );
+};
+
+interface HashtagDropDownProps {
+  onChange?: (text: string) => void;
+}
+
+const HashtagDropDown = ({ onChange }: HashtagDropDownProps) => {
+  // handle
+  const handleSelect = (tag: string) => {
+    onChange && onChange(tag);
+  };
+
+  return (
+    <ScrollView className="flex size-full flex-col gap-1 overflow-hidden rounded-lg border-[1px] border-gray-300 bg-white shadow-2xl">
+      {dummyTags.map((tag, index) => (
+        <View key={`hashtag-dropdown-key-${index}`} className="h-12 w-full border-b-[1px] border-gray-300 px-6 py-1">
+          <TouchableOpacity className="size-full" onPress={() => handleSelect(tag)}>
+            <Text className="mt-1 size-full text-xl font-semibold">{tag}</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+    </ScrollView>
   );
 };

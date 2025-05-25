@@ -1,10 +1,44 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import logo from '@/assets/images/logo.png';
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
 import { Tabs, useRouter } from 'expo-router';
-import { Image, Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+
+const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: BottomTabBarButtonProps) => {
+  const scaleValue = useRef(new Animated.Value(1)).current;
+
+  // handle
+  const handlePressOut = () => {
+    // Animated.spring(..) target value 보다 살짝 커졋다가 작아지는 효과
+    // Animated.sequence(..) 순차적으로 animation 실행
+    Animated.sequence([
+      Animated.spring(scaleValue, {
+        toValue: 1.2,
+        useNativeDriver: true,
+        speed: 200,
+      }),
+      Animated.spring(scaleValue, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 200,
+      }),
+    ]).start();
+  };
+
+  return (
+    <Pressable
+      onPress={onPress}
+      onPressOut={handlePressOut}
+      style={[style]}
+      android_ripple={{ borderless: false, radius: 0 }}
+    >
+      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>{children}</Animated.View>
+    </Pressable>
+  );
+};
 
 export default function TabLayout() {
   // state
@@ -61,6 +95,7 @@ export default function TabLayout() {
         screenOptions={{
           headerShown: false,
           tabBarLabel: () => null,
+          tabBarButton: (props) => <AnimatedTabBarButton {...props} />,
         }}
       >
         <Tabs.Screen

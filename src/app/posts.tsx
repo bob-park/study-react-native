@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import UserAvatar from '@/components/user/UserAvatar';
 
-import { AntDesign, Entypo, Feather, Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import cx from 'classnames';
 import * as ImagePicker from 'expo-image-picker';
-import { MediaTypeOptions } from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
 import {

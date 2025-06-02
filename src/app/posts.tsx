@@ -117,23 +117,23 @@ export default function PostsModal() {
   };
 
   return (
-    <View className="mt-5 flex size-full flex-col items-center gap-2">
+    <View className="mt-5 flex h-[750px] w-full flex-col items-center">
       {/* headers */}
-      <View className="relative z-10 flex h-12 w-full flex-none flex-row items-center justify-center gap-2">
-        <View className="items-center justify-center">
+      <View className="z-10 flex h-12 w-full flex-none flex-row items-center justify-center gap-2">
+        <View className="relative w-full items-center justify-center">
           <Text className="text-xl font-bold">새로운 스레드</Text>
-        </View>
 
-        <View className="absolute left-5 top-1 w-12 items-center">
-          <Pressable className="w-full" onPress={() => router.back()}>
-            <Text className="text-lg">취소</Text>
-          </Pressable>
+          <View className="absolute left-5 top-1 w-12 items-center">
+            <Pressable className="w-full" onPress={() => router.back()}>
+              <Text className="text-lg">취소</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
 
       {/* contents */}
       <FlatList
-        className="size-full overflow-visible"
+        className="w-full"
         data={threads}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -150,7 +150,7 @@ export default function PostsModal() {
       />
 
       {/* actions */}
-      <View className="absolute bottom-14 flex h-12 w-full flex-none flex-row-reverse items-center justify-center gap-2">
+      <View className="flex h-12 w-full flex-none flex-row-reverse items-center justify-center gap-2">
         <Pressable
           className={cx(
             'mr-5 h-10 w-24 flex-none items-center justify-center rounded-full',
@@ -209,6 +209,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
       onUpdate({
         ...thread,
         text: post,
+        hashTags: hashtags.map((hashtag) => ({ id: uuid.v4(), tag: hashtag })),
       });
   };
 
@@ -321,15 +322,6 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
         thread.imageUris.length === 0 ? 'h-24' : 'h-56',
       )}
     >
-      {/* close */}
-      {!first && (
-        <View className="absolute right-3 top-0 size-6 flex-none">
-          <Pressable className="w-full" onPress={handleRemove}>
-            <AntDesign name="close" size={20} color="gray" />
-          </Pressable>
-        </View>
-      )}
-
       {/* avatar */}
       <View className="flex h-full flex-none flex-col items-center justify-center">
         <View className="size-16 flex-none">
@@ -355,6 +347,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
                 className="font-semibold text-gray-400"
                 value={hashtags.map((hashtag) => `#${hashtag}`).join(' ')}
                 placeholder="주제 추가"
+                placeholderTextColor="gray"
                 onChangeText={handleUpdateHashtags}
                 onFocus={() => setShowSelectTags(true)}
                 onBlur={() => setShowSelectTags(false)}
@@ -372,6 +365,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
               className="w-full"
               multiline
               placeholder="새로운 소식이 있나요?"
+              placeholderTextColor="gray"
               value={post}
               onChangeText={(e) => setPost(e)}
             />
@@ -386,10 +380,10 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
                 <View className="relative ml-2 flex h-32 w-32">
                   <Image className="size-full rounded-2xl" source={{ uri }} alt="thread image" />
                   <TouchableOpacity
-                    className="absolute right-1 top-1 size-7 rounded-full bg-white p-[2px]"
+                    className="absolute right-1 top-1 size-7 rounded-full bg-white p-[1px]"
                     onPress={() => handleRemoveImage(uri)}
                   >
-                    <AntDesign name="closecircle" size={20} color="black" />
+                    <AntDesign name="closecircle" size={22} color="black" />
                   </TouchableOpacity>
                 </View>
               )}
@@ -415,6 +409,15 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
           </View>
         </View>
       </View>
+
+      {/* close */}
+      {!first && (
+        <View className="size-6 flex-none">
+          <Pressable className="w-full" onPress={handleRemove}>
+            <AntDesign name="close" size={20} color="gray" />
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };
@@ -431,7 +434,7 @@ const AddThread = ({ posting = false, onAdd }: AddThreadProps) => {
   };
 
   return (
-    <View className="mx-10 my-2 flex size-full flex-row items-start justify-center gap-2">
+    <View className="mx-10 my-2 flex h-[300px] w-full flex-row items-start justify-center gap-2">
       <View className="size-6 flex-none">
         <UserAvatar name="bob" />
       </View>

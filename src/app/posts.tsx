@@ -4,8 +4,9 @@ import UserAvatar from '@/components/user/UserAvatar';
 
 import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import cx from 'classnames';
+import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
-import { FlatList, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Linking, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 
 const dummyTags = [
@@ -72,16 +73,16 @@ export default function PostsModal() {
     });
   };
 
-  const handleUpdateThread = ({ id, text }: { id: string; text: string }) => {
+  const handleUpdateThread = (thread: Thread) => {
     setThreads((prev) => {
       const newThreads = prev.slice();
 
-      const index = prev.findIndex((item) => item.id === id);
+      const index = prev.findIndex((item) => item.id === thread.id);
 
       if (index >= 0) {
         newThreads[index] = {
           ...newThreads[index],
-          text: text,
+          ...thread,
         };
       }
 
@@ -106,7 +107,7 @@ export default function PostsModal() {
   return (
     <View className="mt-5 flex size-full flex-col items-center gap-2">
       {/* headers */}
-      <View className="relative flex h-12 w-full flex-none flex-row items-center justify-center gap-2">
+      <View className="relative z-10 flex h-12 w-full flex-none flex-row items-center justify-center gap-2">
         <View className="items-center justify-center">
           <Text className="text-xl font-bold">새로운 스레드</Text>
         </View>
@@ -120,7 +121,7 @@ export default function PostsModal() {
 
       {/* contents */}
       <FlatList
-        className="w-full overflow-visible"
+        className="z-0 size-full overflow-visible"
         data={threads}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -161,7 +162,7 @@ interface ThreadItemProps {
   thread: Thread;
   first?: boolean;
   last?: boolean;
-  onUpdate?: ({ id, text }: { id: string; text: string }) => void;
+  onUpdate?: (item: Thread) => void;
   onRemove?: (id: string) => void;
 }
 
@@ -192,7 +193,11 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
 
   // handle
   const handleUpdate = () => {
-    onUpdate && onUpdate({ id: thread.id, text: post });
+    onUpdate &&
+      onUpdate({
+        ...thread,
+        text: post,
+      });
   };
 
   const handleRemove = () => {
@@ -216,6 +221,48 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
 
     setHashtags(tags);
     setShowSelectTags(false);
+  };
+
+  const handleGetMyLocation = async (id: string) => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== 'granted') {
+      try {
+        await Location.getBackgroundPermissionsAsync();
+      } catch (error) {
+        console.error(error);
+
+        Alert.alert('Location permission not granted.', 'Please grant location permissions.', [
+          {
+            text: 'Open Settings',
+            onPress: async () => {
+              await Linking.openSettings();
+            },
+          },
+          {
+            text: 'Cancel',
+          },
+        ]);
+      }
+
+      return;
+    }
+
+    const location = await Location.getCurrentPositionAsync({});
+
+    // location 을 address 로 바꿔주는 함수
+    const address = await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
+    console.log(address);
+
+    onUpdate &&
+      onUpdate({
+        ...thread,
+        location: [location.coords.latitude, location.coords.longitude],
+      });
   };
 
   return (
@@ -288,7 +335,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
             <Pressable className="">
               <MaterialCommunityIcons name="vote" size={20} color="gray" />
             </Pressable>
-            <Pressable className="">
+            <Pressable className="" onPress={() => handleGetMyLocation(thread.id)}>
               <Feather name="map-pin" size={20} color="gray" />
             </Pressable>
           </View>

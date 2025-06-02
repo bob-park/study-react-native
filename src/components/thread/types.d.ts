@@ -8,6 +8,7 @@ interface Thread {
   userId: string;
   text: string;
   imageUris: string[];
-  hashTags: HashTag[]
+  hashTags: HashTag[],
+  location?: [latitude: number, longtitude: number],
   createdAt: Date;
 }

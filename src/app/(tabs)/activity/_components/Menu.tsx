@@ -24,7 +24,7 @@ export function ActivityMenuItem({ active = false, text, onPress }: ActivityMenu
   return (
     <View className={cx('h-8 flex-none')}>
       <TouchableOpacity
-        className={cx('w-full items-center rounded-full border-2 border-gray-300 px-4', {
+        className={cx('w-full items-center rounded-full border-[1px] border-gray-300 px-4', {
           'bg-gray-300': active,
         })}
         activeOpacity={0.8}

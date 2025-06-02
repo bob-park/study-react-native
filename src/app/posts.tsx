@@ -2,11 +2,24 @@ import { useEffect, useRef, useState } from 'react';
 
 import UserAvatar from '@/components/user/UserAvatar';
 
-import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import cx from 'classnames';
+import * as ImagePicker from 'expo-image-picker';
+import { MediaTypeOptions } from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
-import { Alert, FlatList, Linking, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  Image,
+  Linking,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import uuid from 'react-native-uuid';
 
 const dummyTags = [
@@ -121,7 +134,7 @@ export default function PostsModal() {
 
       {/* contents */}
       <FlatList
-        className="z-0 size-full overflow-visible"
+        className="size-full overflow-visible"
         data={threads}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -227,22 +240,23 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
     const { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== 'granted') {
+      Alert.alert('Location permission not granted.', 'Please grant location permissions.', [
+        {
+          text: 'Open Settings',
+          onPress: async () => {
+            await Linking.openSettings();
+          },
+        },
+        {
+          text: 'Cancel',
+        },
+      ]);
+
       try {
         await Location.getBackgroundPermissionsAsync();
       } catch (error) {
         console.error(error);
-
-        Alert.alert('Location permission not granted.', 'Please grant location permissions.', [
-          {
-            text: 'Open Settings',
-            onPress: async () => {
-              await Linking.openSettings();
-            },
-          },
-          {
-            text: 'Cancel',
-          },
-        ]);
+        return;
       }
 
       return;
@@ -251,12 +265,10 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
     const location = await Location.getCurrentPositionAsync({});
 
     // location 을 address 로 바꿔주는 함수
-    const address = await Location.reverseGeocodeAsync({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    });
-
-    console.log(address);
+    // const address = await Location.reverseGeocodeAsync({
+    //   latitude: location.coords.latitude,
+    //   longitude: location.coords.longitude,
+    // });
 
     onUpdate &&
       onUpdate({
@@ -265,8 +277,51 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
       });
   };
 
+  const pickImages = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      Alert.alert('Image permission not granted.', 'Please grant Image permissions.', [
+        {
+          text: 'Open Settings',
+          onPress: async () => {
+            await Linking.openSettings();
+          },
+        },
+        {
+          text: 'Cancel',
+        },
+      ]);
+
+      return;
+    }
+
+    const images = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images', 'videos', 'livePhotos'],
+      allowsMultipleSelection: true,
+      selectionLimit: 5,
+    });
+
+    const imageUris = images.assets?.map((asset) => asset.uri);
+
+    onUpdate &&
+      onUpdate({
+        ...thread,
+        imageUris: imageUris || [],
+      });
+  };
+
+  const handleRemoveImage = (imageUri: string) => {
+    onUpdate && onUpdate({ ...thread, imageUris: thread.imageUris.filter((item) => item !== imageUri) });
+  };
+
   return (
-    <View className="relative mx-5 flex h-24 flex-row items-start justify-center gap-2">
+    <View
+      className={cx(
+        'relative mx-5 flex flex-row items-start justify-center gap-2',
+        thread.imageUris.length === 0 ? 'h-24' : 'h-56',
+      )}
+    >
       {/* close */}
       {!first && (
         <View className="absolute right-3 top-0 size-6 flex-none">
@@ -322,8 +377,28 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
               onChangeText={(e) => setPost(e)}
             />
           </View>
+          {thread.imageUris.length > 0 && (
+            <FlatList
+              className="h-32 w-full"
+              data={thread.imageUris}
+              horizontal
+              keyExtractor={(_, index) => `thread-${thread.id}-item-image-${index}`}
+              renderItem={({ item: uri, index: imageIndex }) => (
+                <View className="relative ml-2 flex h-32 w-32">
+                  <Image className="size-full rounded-2xl" source={{ uri }} alt="thread image" />
+                  <TouchableOpacity
+                    className="absolute right-1 top-1 size-7 rounded-full bg-white p-[2px]"
+                    onPress={() => handleRemoveImage(uri)}
+                  >
+                    <AntDesign name="closecircle" size={20} color="black" />
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          )}
+
           <View className="flex w-full flex-row gap-3">
-            <Pressable className="">
+            <Pressable className="" onPress={() => pickImages()}>
               <MaterialCommunityIcons name="image-multiple-outline" size={20} color="gray" />
             </Pressable>
             <Pressable className="">

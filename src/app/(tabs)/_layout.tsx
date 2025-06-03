@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import logo from '@/assets/images/logo.png';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { Tabs, useRouter } from 'expo-router';
 import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
@@ -41,7 +41,7 @@ const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: Bottom
 
 export default function TabLayout() {
   // state
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   const [isLoginModelOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   // hooks
@@ -163,10 +163,28 @@ export default function TabLayout() {
 
         <Tabs.Screen name="(posts)/[username]/posts/[postId]" options={{ href: null }} />
       </Tabs>
-      <Modal visible={isLoginModelOpen} transparent animationType="slide">
-        <View className="relative mt-[90%] flex size-full flex-col rounded-t-2xl bg-white p-4 shadow-2xl">
+      <Modal
+        visible={isLoginModelOpen}
+        animationType="slide"
+        presentationStyle="formSheet"
+        onRequestClose={() => setIsLoginModalOpen(false)}
+      >
+        <View className="relative flex size-full flex-col rounded-t-2xl bg-white p-4 shadow-2xl">
           <View className="">
             <Text className="text-2xl font-bold">Login Modal</Text>
+          </View>
+
+          <View className="mt-[50%] w-full">
+            <Pressable
+              className="flex flex-row items-center justify-center gap-2 rounded-2xl bg-black p-4"
+              onPress={() => {
+                router.push('/login');
+                closeLoginModal();
+              }}
+            >
+              <FontAwesome6 name="threads" size={28} color="white" />
+              <Text className="text-xl font-semibold text-white">로그인</Text>
+            </Pressable>
           </View>
 
           <TouchableOpacity className="absolute right-6 top-6" onPress={closeLoginModal}>

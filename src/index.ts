@@ -21,7 +21,7 @@ if (__DEV__) {
 
         if (username === 'bobpark' && password === '12345') {
           return {
-            accessToekn: 'access-token',
+            accessToken: 'access-token',
             refreshToken: 'refresh-token',
             user: {
               id: 'bob-park',

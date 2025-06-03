@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import { Alert, Pressable, Text, View } from 'react-native';
 
 export default function LoginPage() {
@@ -21,9 +23,15 @@ export default function LoginPage() {
 
         return res.json();
       })
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) =>
+        Promise.all([
+          SecureStore.setItemAsync('accessToken', data.accessToken),
+          SecureStore.setItemAsync('accessToken', data.refreshToken),
+          AsyncStorage.setItem('user', JSON.stringify(data.user)),
+        ]).then(() => {
+          router.push('/(tabs)');
+        }),
+      )
       .catch((err) => {
         console.error(err);
         Alert.alert('Invalid credentials.');

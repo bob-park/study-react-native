@@ -1,4 +1,4 @@
-import TabMenu, { TabMenuItem } from '@/components/menu/TabMenu';
+import TabMenu, { TabMenuItem } from '@/shared/components/menu/TabMenu';
 
 import { usePathname, useRouter } from 'expo-router';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';

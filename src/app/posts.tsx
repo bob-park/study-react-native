@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import UserAvatar from '@/components/user/UserAvatar';
+import UserAvatar from '@/shared/components/user/UserAvatar';
 
 import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import cx from 'classnames';

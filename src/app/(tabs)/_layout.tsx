@@ -1,4 +1,6 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
+
+import { AuthContext } from '@/shared/providers/auth/AuthProvider';
 
 import logo from '@/assets/images/logo.png';
 import { AntDesign, Entypo, FontAwesome6, Ionicons } from '@expo/vector-icons';
@@ -40,8 +42,11 @@ const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: Bottom
 };
 
 export default function TabLayout() {
+  // context
+  const { user } = useContext(AuthContext);
+
   // state
-  const isLoggedIn = false;
+  const isLoggedIn = !!user;
   const [isLoginModelOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   // hooks
@@ -74,14 +79,16 @@ export default function TabLayout() {
           <Image className="size-10" source={logo} alt="logo" />
         </TouchableOpacity>
 
-        <View className="absolute right-4 top-2">
-          <TouchableOpacity
-            className="h-8 w-16 items-center justify-center rounded-lg bg-black"
-            onPress={openLoginModal}
-          >
-            <Text className="font-bold text-white">로그인</Text>
-          </TouchableOpacity>
-        </View>
+        {!isLoggedIn && (
+          <View className="absolute right-4 top-2">
+            <TouchableOpacity
+              className="h-8 w-16 items-center justify-center rounded-lg bg-black"
+              onPress={openLoginModal}
+            >
+              <Text className="font-bold text-white">로그인</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       {/* tabs */}

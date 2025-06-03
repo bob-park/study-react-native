@@ -26,7 +26,7 @@ if (__DEV__) {
             refreshToken: 'refresh-token',
             user: {
               id: 'bob-park',
-              username: 'bob-park',
+              username: '박현우',
             },
           };
         } else {

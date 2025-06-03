@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-import '@/global.css';
+import '@/app/global.css';
 import AuthProvider from '@/shared/providers/auth/AuthProvider';
 
 export { ErrorBoundary } from 'expo-router';

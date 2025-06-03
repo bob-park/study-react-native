@@ -95,7 +95,7 @@ export default function TabLayout() {
           </View>
         )}
 
-        <TouchableOpacity className="absolute left-4 top-2" onPress={() => setOpenSideMenu(true)}>
+        <TouchableOpacity className="absolute left-4 top-3" onPress={() => setOpenSideMenu(true)}>
           <Entypo name="menu" size={24} color="black" />
         </TouchableOpacity>
       </View>

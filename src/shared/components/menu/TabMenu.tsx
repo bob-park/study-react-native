@@ -29,7 +29,7 @@ export function TabMenuItem({ active = false, text, onPress }: TabMenuItemProps)
       })}
     >
       <TouchableOpacity className="w-full items-center" activeOpacity={0.8} onPress={handleClick}>
-        <Text className={cx('text-xl', active ? 'font-bold' : 'text-gray-500')}>{text}</Text>
+        <Text className={cx('text-lg', active ? 'font-bold' : 'text-gray-500')}>{text}</Text>
       </TouchableOpacity>
     </View>
   );

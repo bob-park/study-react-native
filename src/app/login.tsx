@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 
-import { AuthContext } from '@/shared/providers/auth/AuthProvider';
+import { Pressable, Text, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+
+import { AuthContext } from '@/shared/providers/auth/AuthProvider';
 
 export default function LoginPage() {
   // context

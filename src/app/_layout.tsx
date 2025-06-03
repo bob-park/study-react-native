@@ -1,7 +1,7 @@
-import AuthProvider from '@/shared/providers/auth/AuthProvider';
+import { Stack } from 'expo-router';
 
 import '@/global.css';
-import { Stack } from 'expo-router';
+import AuthProvider from '@/shared/providers/auth/AuthProvider';
 
 export { ErrorBoundary } from 'expo-router';
 

@@ -1,5 +1,6 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
+
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 export default function Index() {
   // hooks

@@ -1,4 +1,3 @@
 interface User {
   username: string;
 }
-

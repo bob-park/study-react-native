@@ -1,4 +1,5 @@
 import 'expo-router/entry';
+
 import { Response, Server, createServer } from 'miragejs';
 
 declare global {

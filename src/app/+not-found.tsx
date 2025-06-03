@@ -1,5 +1,6 @@
-import { useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
+
+import { useRouter } from 'expo-router';
 
 export default function NotFound() {
   // hooks

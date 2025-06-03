@@ -1,5 +1,6 @@
-import defaultAvatar from '@/assets/images/default-user-avatar.png';
 import { Image, View } from 'react-native';
+
+import defaultAvatar from '@/assets/images/default-user-avatar.png';
 
 interface UserAvatarProps {
   avatar?: string;

@@ -1,12 +1,16 @@
 import { useContext, useRef, useState } from 'react';
 
-import { AuthContext } from '@/shared/providers/auth/AuthProvider';
+import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+
+import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+
+import { Tabs, useRouter } from 'expo-router';
+
+import { AntDesign, Entypo, FontAwesome6, Ionicons } from '@expo/vector-icons';
 
 import logo from '@/assets/images/logo.png';
-import { AntDesign, Entypo, FontAwesome6, Ionicons } from '@expo/vector-icons';
-import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
-import { Tabs, useRouter } from 'expo-router';
-import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import SideMenu from '@/shared/components/menu/SideMenu';
+import { AuthContext } from '@/shared/providers/auth/AuthProvider';
 
 const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: BottomTabBarButtonProps) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
@@ -48,6 +52,7 @@ export default function TabLayout() {
   // state
   const isLoggedIn = !!user;
   const [isLoginModelOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
 
   // hooks
   /**
@@ -89,6 +94,10 @@ export default function TabLayout() {
             </TouchableOpacity>
           </View>
         )}
+
+        <TouchableOpacity className="absolute left-4 top-2" onPress={() => setOpenSideMenu(true)}>
+          <Entypo name="menu" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
       {/* tabs */}
@@ -199,6 +208,7 @@ export default function TabLayout() {
           </TouchableOpacity>
         </View>
       </Modal>
+      <SideMenu open={openSideMenu} onClose={() => setOpenSideMenu(false)} />
     </>
   );
 }

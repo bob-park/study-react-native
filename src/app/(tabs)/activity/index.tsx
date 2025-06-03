@@ -1,7 +1,8 @@
-import NotFound from '@/app/+not-found';
+import { View } from 'react-native';
 
 import { usePathname, useRouter } from 'expo-router';
-import { View } from 'react-native';
+
+import NotFound from '@/app/+not-found';
 
 import ActivityMenu, { ActivityMenuItem } from './_components/Menu';
 

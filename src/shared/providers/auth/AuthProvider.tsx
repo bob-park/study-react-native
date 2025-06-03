@@ -1,9 +1,11 @@
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
+
+import { Alert } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { Alert } from 'react-native';
 
 interface AuthContext {
   user?: User;
@@ -19,6 +21,19 @@ export default function AuthProvider({ children }: Readonly<{ children: React.Re
 
   // hooks
   const router = useRouter();
+
+  // useEffect
+  useEffect(() => {
+    AsyncStorage.getItem('user').then((data) => {
+      if (!data) {
+        return;
+      }
+
+      setUser(JSON.parse(data) as User);
+
+      // TODO: access Token 체크
+    });
+  }, []);
 
   // handle
   const handleLogin = ({ username, password }: { username: string; password: string }) => {

@@ -1222,9 +1222,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bob-park/prettier-config-bobpark@npm:0.2.0-RC1-2025-0524":
-  version: 0.2.0-RC1-2025-0524
-  resolution: "@bob-park/prettier-config-bobpark@npm:0.2.0-RC1-2025-0524::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.2.0-RC1-2025-0524%2F7ae00011aad77d339a8551363230d7246e07af8c"
+"@bob-park/prettier-config-bobpark@npm:0.2.1-RC4-2025-0603":
+  version: 0.2.1-RC4-2025-0603
+  resolution: "@bob-park/prettier-config-bobpark@npm:0.2.1-RC4-2025-0603::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.2.1-RC4-2025-0603%2Fddb7c143a9b83c6fb9113b00a803e7bbfb7189af"
   dependencies:
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
     eslint-plugin-prettier: "npm:^5.2.1"
@@ -1233,7 +1233,7 @@ __metadata:
   peerDependencies:
     eslint: ">= 8 < 9"
     typescript: ">= 5"
-  checksum: 10c0/5ad56a19d01ed5e3097c14dd39c13910971cefd3e86f45f17c42e9dcecd70b2afa2327ff9942b9968ec0638e8214e1034df42be6c8cd832d6ba87bfa19981d24
+  checksum: 10c0/67619bd0c32cb61b65b15969714e7a52673f583729160a69d875acd0183e8977f21982d5c63552f8fca779e9e3b4b6742d0e46c4e54ecce14acd24a9122845df
   languageName: node
   linkType: hard
 
@@ -9065,6 +9065,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"npm-check-updates@npm:^18.0.1":
+  version: 18.0.1
+  resolution: "npm-check-updates@npm:18.0.1"
+  bin:
+    ncu: build/cli.js
+    npm-check-updates: build/cli.js
+  checksum: 10c0/0f4f8c26e8a51a413ee724fe76f0860bd360e0c096a52e928916ef6fe3ff0c2ea0f346ca8d291a43f46a269d05450e2a879fed8aa11871f73970d5f9dfdd162a
+  languageName: node
+  linkType: hard
+
 "npm-package-arg@npm:^11.0.0":
   version: 11.0.3
   resolution: "npm-package-arg@npm:11.0.3"
@@ -11280,7 +11290,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@bob-park/eslint-config-bobpark": "npm:0.1.3-RC5-2024-0410"
-    "@bob-park/prettier-config-bobpark": "npm:0.2.0-RC1-2025-0524"
+    "@bob-park/prettier-config-bobpark": "npm:0.2.1-RC4-2025-0603"
     "@expo/vector-icons": "npm:^14.1.0"
     "@react-native-async-storage/async-storage": "npm:2.1.2"
     "@react-navigation/native": "npm:^7.1.6"
@@ -11303,6 +11313,7 @@ __metadata:
     jest-expo: "npm:~53.0.5"
     miragejs: "npm:^0.1.48"
     nativewind: "npm:^4.1.23"
+    npm-check-updates: "npm:^18.0.1"
     react: "npm:19.0.0"
     react-dom: "npm:19.0.0"
     react-native: "npm:0.79.2"

@@ -1,7 +1,8 @@
-import TabMenu, { TabMenuItem } from '@/shared/components/menu/TabMenu';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { usePathname, useRouter } from 'expo-router';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+import TabMenu, { TabMenuItem } from '@/shared/components/menu/TabMenu';
 
 export default function Index() {
   // hooks

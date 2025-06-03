@@ -1,5 +1,6 @@
-import cx from 'classnames';
 import { Text, TouchableOpacity, View } from 'react-native';
+
+import cx from 'classnames';
 
 interface ActivityMenuProps {
   children?: React.ReactNode;

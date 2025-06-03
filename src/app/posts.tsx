@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import UserAvatar from '@/shared/components/user/UserAvatar';
-
-import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
-import cx from 'classnames';
-import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
-import { useRouter } from 'expo-router';
 import {
   Alert,
   FlatList,
@@ -19,6 +12,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
+import { useRouter } from 'expo-router';
+
+import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
+
+import UserAvatar from '@/shared/components/user/UserAvatar';
+
+import cx from 'classnames';
 import uuid from 'react-native-uuid';
 
 const dummyTags = [

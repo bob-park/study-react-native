@@ -14,8 +14,6 @@ import SideMenu from '@/shared/components/menu/SideMenu';
 import { AuthContext } from '@/shared/providers/auth/AuthProvider';
 import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
 
-import cx from 'classnames';
-
 const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: BottomTabBarButtonProps) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
 
@@ -82,13 +80,9 @@ export default function TabLayout() {
   };
 
   return (
-    <View
-      className={cx('size-full', {
-        'bg-black': theme === 'dark',
-      })}
-    >
+    <View className="size-full dark:bg-black">
       {/* logo */}
-      <View className={cx('relative mt-16 flex h-14 flex-row items-center justify-center gap-2')}>
+      <View className="relative mt-16 flex h-14 flex-row items-center justify-center gap-2">
         <TouchableOpacity onPress={() => router.push('/')}>
           <Image className="size-10 invert-0" source={theme === 'light' ? logo : logoDarkMode} alt="logo" />
         </TouchableOpacity>
@@ -96,20 +90,10 @@ export default function TabLayout() {
         {!isLoggedIn && (
           <View className="absolute right-4 top-3">
             <TouchableOpacity
-              className={cx('h-8 w-16 items-center justify-center rounded-lg bg-black', {
-                'bg-black': theme === 'light',
-                'bg-white': theme === 'dark',
-              })}
+              className="h-8 w-16 items-center justify-center rounded-lg bg-black dark:bg-white"
               onPress={openLoginModal}
             >
-              <Text
-                className={cx('font-bold', {
-                  'text-black': theme === 'dark',
-                  'text-white': theme === 'light',
-                })}
-              >
-                로그인
-              </Text>
+              <Text className="font-bold text-white dark:text-black">로그인</Text>
             </TouchableOpacity>
           </View>
         )}

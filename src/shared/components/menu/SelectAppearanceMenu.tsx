@@ -24,7 +24,7 @@ export default function SelectAppearanceMenu({ open, onClose }: Readonly<Appeara
     onClose && onClose();
   };
 
-  const handleChangeScheme = (scheme: 'dark' | 'light' | 'auto') => {
+  const handleChangeScheme = (scheme: 'dark' | 'light' | 'system') => {
     onUpdatePreference(scheme);
   };
 
@@ -74,10 +74,10 @@ export default function SelectAppearanceMenu({ open, onClose }: Readonly<Appeara
               <TouchableOpacity
                 className={cx(
                   'h-10 w-16 items-center justify-center rounded-xl',
-                  preference === 'auto' && 'bg-gray-300',
+                  preference === 'system' && 'bg-gray-300',
                 )}
-                disabled={preference === 'auto'}
-                onPress={() => handleChangeScheme('auto')}
+                disabled={preference === 'system'}
+                onPress={() => handleChangeScheme('system')}
               >
                 <Text className="text-lg font-semibold">Auto</Text>
               </TouchableOpacity>

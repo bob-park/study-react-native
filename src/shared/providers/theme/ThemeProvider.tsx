@@ -1,12 +1,12 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
 
-import { useColorScheme } from 'react-native';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useColorScheme } from 'nativewind';
 
 const KEY_THEME_PREFERENCE = 'theme.preference';
 
-type ThemePreference = 'auto' | 'light' | 'dark';
+type ThemePreference = 'system' | 'light' | 'dark';
 
 interface ThemeContextType {
   theme: 'dark' | 'light';
@@ -16,27 +16,26 @@ interface ThemeContextType {
 
 export const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
-  preference: 'auto',
+  preference: 'system',
   onUpdatePreference: (preference: ThemePreference) => {},
 });
 
 export default function ThemeProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   // state
-  const [theme, setTheme] = useState<'dark' | 'light'>('light');
-  const [preference, setPreference] = useState<ThemePreference>('auto');
+  const [preference, setPreference] = useState<ThemePreference>('system');
 
   // hooks
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useColorScheme();
 
   // useEffect
   useEffect(() => {
     AsyncStorage.getItem(KEY_THEME_PREFERENCE)
-      .then((data) => (!data ? 'auto' : (data as ThemePreference)))
+      .then((data) => (!data ? 'system' : (data as ThemePreference)))
       .then((preference) => setPreference(preference));
   }, []);
 
   useEffect(() => {
-    setTheme(preference === 'auto' ? (colorScheme ?? 'light') : preference);
+    setColorScheme(preference === 'system' ? 'system' : preference);
 
     // save
     AsyncStorage.setItem(KEY_THEME_PREFERENCE, preference);
@@ -45,13 +44,13 @@ export default function ThemeProvider({ children }: Readonly<{ children: React.R
   // memorize
   const contextValue = useMemo<ThemeContextType>(
     () => ({
-      theme,
+      theme: colorScheme || 'light',
       preference,
       onUpdatePreference: (preference: ThemePreference) => {
         setPreference(preference);
       },
     }),
-    [theme, preference],
+    [colorScheme, preference],
   );
 
   return <ThemeContext value={contextValue}>{children}</ThemeContext>;

@@ -31,7 +31,14 @@ export function ActivityMenuItem({ active = false, text, onPress }: ActivityMenu
         activeOpacity={0.8}
         onPress={handleClick}
       >
-        <Text className={cx('text-base')}>{text}</Text>
+        <Text
+          className={cx('text-base font-extrabold', {
+            'text-black': active,
+            'dark:text-white': !active,
+          })}
+        >
+          {text}
+        </Text>
       </TouchableOpacity>
     </View>
   );

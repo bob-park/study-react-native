@@ -17,7 +17,7 @@ interface AppearanceMenuProps {
 
 export default function SelectAppearanceMenu({ open, onClose }: Readonly<AppearanceMenuProps>) {
   // context
-  const { preference, onUpdatePreference } = useContext(ThemeContext);
+  const { theme, preference, onUpdatePreference } = useContext(ThemeContext);
 
   // handle
   const handleClose = () => {
@@ -39,17 +39,17 @@ export default function SelectAppearanceMenu({ open, onClose }: Readonly<Appeara
         <TouchableOpacity className="absolute left-0 top-0 h-screen w-screen" activeOpacity={1} onPress={handleClose} />
 
         <SafeAreaView
-          className="absolute left-3 top-[90px] z-50 w-[60%] max-w-[280px] rounded-2xl bg-white"
+          className="absolute left-3 top-[90px] z-50 w-[60%] max-w-[280px] rounded-2xl border-[1px] border-gray-300 bg-white dark:bg-black"
           style={{ shadowColor: '#000', shadowOpacity: 0.15, shadowOffset: { width: 2, height: 4 } }}
         >
           <View className="flex flex-col items-center justify-center gap-2 px-5 py-3">
             <View className="relative flex w-full flex-row items-center justify-center gap-3">
               <View className="items-center justify-center">
-                <Text className="text-lg font-semibold">Appearance</Text>
+                <Text className="text-lg font-semibold dark:text-white">Appearance</Text>
               </View>
 
               <TouchableOpacity className="absolute left-1 top-0" onPress={handleClose}>
-                <Ionicons name="arrow-back-outline" size={24} color="black" />
+                <Ionicons name="arrow-back-outline" size={24} color={theme === 'light' ? 'black' : 'white'} />
               </TouchableOpacity>
             </View>
 
@@ -62,14 +62,22 @@ export default function SelectAppearanceMenu({ open, onClose }: Readonly<Appeara
                 disabled={preference === 'light'}
                 onPress={() => handleChangeScheme('light')}
               >
-                <MaterialIcons name="light-mode" size={24} color="black" />
+                <MaterialIcons
+                  name="light-mode"
+                  size={24}
+                  color={theme === 'light' || preference === 'light' ? 'black' : 'white'}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 className={cx('size-10 items-center justify-center rounded-xl', preference === 'dark' && 'bg-gray-300')}
                 disabled={preference === 'dark'}
                 onPress={() => handleChangeScheme('dark')}
               >
-                <MaterialIcons name="dark-mode" size={24} color="black" />
+                <MaterialIcons
+                  name="dark-mode"
+                  size={24}
+                  color={theme === 'light' || preference === 'dark' ? 'black' : 'white'}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 className={cx(
@@ -79,7 +87,13 @@ export default function SelectAppearanceMenu({ open, onClose }: Readonly<Appeara
                 disabled={preference === 'system'}
                 onPress={() => handleChangeScheme('system')}
               >
-                <Text className="text-lg font-semibold">Auto</Text>
+                <Text
+                  className={cx('text-lg font-semibold', {
+                    'dark:text-white': preference !== 'system',
+                  })}
+                >
+                  Auto
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -110,24 +110,24 @@ export default function TabLayout() {
           headerShown: false,
           tabBarLabel: () => null,
           tabBarButton: (props) => <AnimatedTabBarButton {...props} />,
+          tabBarStyle: { backgroundColor: 'none' },
         }}
       >
         <Tabs.Screen
           name="(home)"
           options={{
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <Entypo name="home" size={24} color="black" />
-              ) : (
-                <AntDesign name="home" size={24} color="gray" />
-              ),
+            tabBarIcon: ({ focused }) => (
+              <Entypo name="home" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
+            ),
           }}
         />
 
         <Tabs.Screen
           name="search"
           options={{
-            tabBarIcon: ({ focused }) => <Ionicons name="search" size={24} color={focused ? 'black' : 'gray'} />,
+            tabBarIcon: ({ focused }) => (
+              <Ionicons name="search" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
+            ),
           }}
         />
         <Tabs.Screen
@@ -144,7 +144,9 @@ export default function TabLayout() {
             },
           }}
           options={{
-            tabBarIcon: ({ focused }) => <Ionicons name="add" size={24} color={focused ? 'black' : 'gray'} />,
+            tabBarIcon: ({ focused }) => (
+              <Ionicons name="add" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
+            ),
           }}
         />
         <Tabs.Screen
@@ -159,7 +161,11 @@ export default function TabLayout() {
           }}
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name={focused ? 'heart' : 'hearto'} size={24} color={focused ? 'black' : 'gray'} />
+              <AntDesign
+                name={focused ? 'heart' : 'hearto'}
+                size={24}
+                color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'}
+              />
             ),
           }}
         />
@@ -175,7 +181,11 @@ export default function TabLayout() {
           }}
           options={{
             tabBarIcon: ({ focused }) => (
-              <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={focused ? 'black' : 'gray'} />
+              <Ionicons
+                name={focused ? 'person' : 'person-outline'}
+                size={24}
+                color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'}
+              />
             ),
           }}
         />

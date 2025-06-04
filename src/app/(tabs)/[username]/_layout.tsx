@@ -13,6 +13,7 @@ import { withLayoutContext } from 'expo-router';
 
 import UserAvatar from '@/shared/components/user/UserAvatar';
 import { AuthContext } from '@/shared/providers/auth/AuthProvider';
+import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -26,17 +27,18 @@ export const MaterialTopTabs = withLayoutContext<
 export default function UsernameLayout() {
   // context
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
-    <View className="flex size-full flex-col items-start gap-2">
+    <View className="flex size-full flex-col items-start gap-2 dark:bg-black">
       {/* user info*/}
       <View className="mt-2 flex w-full flex-row items-center justify-between gap-2 px-4">
         <View className="flex flex-col gap-1">
           <View className="">
-            <Text className="text-2xl font-semibold">{user?.username}</Text>
+            <Text className="text-2xl font-semibold dark:text-white">{user?.username}</Text>
           </View>
           <View className="">
-            <Text className="text-lg">{user?.id}</Text>
+            <Text className="text-lg dark:text-white">{user?.id}</Text>
           </View>
         </View>
 
@@ -49,7 +51,7 @@ export default function UsernameLayout() {
       <View className="mt-3">
         <View className="flex flex-row items-center justify-between gap-2 px-4">
           <View className="">
-            <Text className="text-lg text-gray-500">팔로워 0명</Text>
+            <Text className="text-lg text-gray-500 dark:text-gray-300">팔로워 0명</Text>
           </View>
           <View className=""></View>
         </View>
@@ -59,7 +61,7 @@ export default function UsernameLayout() {
       <View className="mt-2">
         <View className="flex flex-row items-center justify-between gap-2 px-4">
           <TouchableOpacity className="h-10 w-full items-center justify-center rounded-xl border-[1px] border-gray-300">
-            <Text className="">프로필 수정</Text>
+            <Text className="dark:text-white">프로필 수정</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -68,7 +70,8 @@ export default function UsernameLayout() {
         <MaterialTopTabs
           screenOptions={{
             tabBarStyle: { backgroundColor: 'none' },
-            tabBarIndicatorStyle: { backgroundColor: 'black' },
+            tabBarLabelStyle: { color: theme === 'light' ? 'black' : 'white', fontWeight: 'bold' },
+            tabBarIndicatorStyle: { backgroundColor: theme === 'light' ? 'black' : 'white' },
           }}
         >
           <MaterialTopTabs.Screen name="index" options={{ title: '스레드' }} />

@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import SelectAppearanceMenu from '@/shared/components/menu/SelectAppearanceMenu';
 import { AuthContext } from '@/shared/providers/auth/AuthProvider';
+import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
 
 interface SideMenuProps {
   open: boolean;
@@ -17,10 +18,11 @@ interface SideMenuProps {
 export default function SideMenu({ open, onClose }: Readonly<SideMenuProps>) {
   // context
   const { user, onLogout } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
 
   // state
   const isLoggedIn = !!user;
-  const [showSelectAppearance, setShowSelectApperance] = useState<boolean>(false);
+  const [showSelectAppearance, setShowSelectAppearance] = useState<boolean>(false);
 
   // hooks
   const colorScheme = useColorScheme();
@@ -52,28 +54,32 @@ export default function SideMenu({ open, onClose }: Readonly<SideMenuProps>) {
           />
 
           <SafeAreaView
-            className="absolute left-3 top-[90px] z-50 w-[70%] max-w-[320px] rounded-2xl bg-white"
-            style={{ shadowColor: '#000', shadowOpacity: 0.15, shadowOffset: { width: 2, height: 4 } }}
+            className="absolute left-3 top-[90px] z-50 w-[70%] max-w-[320px] rounded-2xl border-[1px] border-gray-300 bg-white dark:bg-black"
+            style={{
+              shadowColor: theme === 'light' ? '#000' : '#fff',
+              shadowOpacity: 0.15,
+              shadowOffset: { width: 4, height: 4 },
+            }}
           >
             <View className="">
               <TouchableOpacity
                 className="items-start justify-center px-5 py-3"
-                onPress={() => setShowSelectApperance(true)}
+                onPress={() => setShowSelectAppearance(true)}
               >
-                <Text className="text-lg font-semibold">Appearance</Text>
+                <Text className="text-lg font-semibold dark:text-white">Appearance</Text>
                 <Ionicons className="absolute right-5 top-4" name="chevron-forward" size={20} color="#888" />
               </TouchableOpacity>
               <TouchableOpacity className="items-start justify-center px-5 py-3">
-                <Text className="text-lg font-semibold">Insights</Text>
+                <Text className="text-lg font-semibold dark:text-white">Insights</Text>
               </TouchableOpacity>
               <TouchableOpacity className="items-start justify-center px-5 py-3">
-                <Text className="text-lg font-semibold">Settings</Text>
+                <Text className="text-lg font-semibold dark:text-white">Settings</Text>
               </TouchableOpacity>
 
               <View className="h-[1px] w-full border-[0.5px] border-gray-400" />
 
               <TouchableOpacity className="items-start justify-center px-5 py-3">
-                <Text className="text-lg font-semibold">Report a problem</Text>
+                <Text className="text-lg font-semibold dark:text-white">Report a problem</Text>
               </TouchableOpacity>
 
               {isLoggedIn && (
@@ -85,7 +91,7 @@ export default function SideMenu({ open, onClose }: Readonly<SideMenuProps>) {
           </SafeAreaView>
         </BlurView>
       </Modal>
-      <SelectAppearanceMenu open={showSelectAppearance} onClose={() => setShowSelectApperance(false)} />
+      <SelectAppearanceMenu open={showSelectAppearance} onClose={() => setShowSelectAppearance(false)} />
     </>
   );
 }

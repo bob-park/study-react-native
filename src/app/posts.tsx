@@ -120,15 +120,15 @@ export default function PostsModal() {
   };
 
   return (
-    <View className="mt-5 flex h-[750px] w-full flex-col items-center">
+    <View className="flex size-full flex-col items-center dark:bg-black">
       {/* headers */}
-      <View className="z-10 flex h-12 w-full flex-none flex-row items-center justify-center gap-2">
+      <View className="z-10 mb-2 mt-3 flex h-12 w-full flex-none flex-row items-center justify-center gap-2">
         <View className="relative w-full items-center justify-center">
-          <Text className="text-xl font-bold">새로운 스레드</Text>
+          <Text className="text-xl font-bold dark:text-white">새로운 스레드</Text>
 
           <View className="absolute left-5 top-1 w-12 items-center">
             <Pressable className="w-full" onPress={() => router.back()}>
-              <Text className="text-lg">취소</Text>
+              <Text className="text-lg dark:text-white">취소</Text>
             </Pressable>
           </View>
         </View>
@@ -153,16 +153,16 @@ export default function PostsModal() {
       />
 
       {/* actions */}
-      <View className="flex h-12 w-full flex-none flex-row-reverse items-center justify-center gap-2">
+      <View className="mb-10 flex h-12 w-full flex-none flex-row-reverse items-center justify-center gap-2">
         <Pressable
           className={cx(
             'mr-5 h-10 w-24 flex-none items-center justify-center rounded-full',
-            isPosting ? 'bg-gray-400' : 'bg-black',
+            isPosting ? 'bg-gray-400 dark:bg-gray-600' : 'bg-black dark:bg-gray-300',
           )}
           disabled={isPosting}
           onPress={handlePost}
         >
-          <Text className="text-lg font-bold text-white">게시</Text>
+          <Text className="text-lg font-bold text-white dark:text-black">게시</Text>
         </Pressable>
 
         <View className="flex-1 pl-10">
@@ -331,7 +331,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
           <UserAvatar name="bob" />
         </View>
 
-        <View className="h-full flex-1">
+        <View className="h-full flex-1 pt-2">
           <View className="h-full w-[1px] rounded-2xl border-[1px] border-gray-300"></View>
         </View>
       </View>
@@ -341,13 +341,13 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
         <View className="flex flex-col items-center justify-center gap-1">
           <View className="flex w-full flex-row items-center justify-start gap-2">
             <View className="">
-              <Text className="font-semibold">{thread.userId}</Text>
+              <Text className="font-semibold dark:text-white">{thread.userId}</Text>
             </View>
             <View className="flex flex-row items-center justify-start gap-3">
               <Octicons name="chevron-right" size={15} color="gray" />
               <TextInput
                 ref={tagRef}
-                className="font-semibold text-gray-400"
+                className="font-semibold text-gray-400 dark:text-white"
                 value={hashtags.map((hashtag) => `#${hashtag}`).join(' ')}
                 placeholder="주제 추가"
                 placeholderTextColor="gray"
@@ -365,7 +365,7 @@ const ThreadItem = ({ first = false, last = false, thread, onUpdate, onRemove }:
           <View className="w-full">
             <TextInput
               ref={textRef}
-              className="w-full"
+              className="w-full dark:text-white"
               multiline
               placeholder="새로운 소식이 있나요?"
               placeholderTextColor="gray"
@@ -443,7 +443,14 @@ const AddThread = ({ posting = false, onAdd }: AddThreadProps) => {
       </View>
       <View className="h-full flex-1">
         <TouchableOpacity className="" disabled={posting} onPress={handleAdd}>
-          <Text className={cx('font-semibold', posting ? 'text-gray-300' : 'text-gray-500')}>스레드에 추가</Text>
+          <Text
+            className={cx(
+              'font-semibold',
+              posting ? 'text-gray-300 dark:text-gray-500' : 'text-gray-500 dark:text-gray-300',
+            )}
+          >
+            스레드에 추가
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -461,11 +468,14 @@ const HashtagDropDown = ({ onChange }: HashtagDropDownProps) => {
   };
 
   return (
-    <ScrollView className="flex size-full flex-col gap-1 overflow-hidden rounded-lg border-[1px] border-gray-300 bg-white shadow-2xl">
+    <ScrollView className="flex size-full flex-col gap-1 overflow-hidden rounded-lg border-[1px] border-gray-300 bg-white shadow-2xl dark:bg-black">
       {dummyTags.map((tag, index) => (
-        <View key={`hashtag-dropdown-key-${index}`} className="h-12 w-full border-b-[1px] border-gray-300 px-6 py-1">
+        <View
+          key={`hashtag-dropdown-key-${index}`}
+          className="h-12 w-full border-b-[1px] border-gray-300 px-6 py-1 dark:bg-black"
+        >
           <TouchableOpacity className="size-full" onPress={() => handleSelect(tag)}>
-            <Text className="mt-1 size-full text-xl font-semibold">{tag}</Text>
+            <Text className="mt-1 size-full text-xl font-semibold dark:text-white">{tag}</Text>
           </TouchableOpacity>
         </View>
       ))}

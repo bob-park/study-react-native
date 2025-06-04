@@ -1,6 +1,16 @@
 import { useContext, useRef, useState } from 'react';
 
-import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Animated,
+  Appearance,
+  Image,
+  Modal,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View
+} from 'react-native';
 
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 
@@ -66,6 +76,12 @@ export default function TabLayout() {
    * </pre>
    */
   const router = useRouter();
+  const colorScheme = useColorScheme();
+
+  Appearance.addChangeListener(({ colorScheme }) => {
+    console.log(colorScheme);
+  });
+
 
   // handle
   const openLoginModal = () => {

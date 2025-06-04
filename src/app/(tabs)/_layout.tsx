@@ -1,16 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 
-import {
-  Animated,
-  Appearance,
-  Image,
-  Modal,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View
-} from 'react-native';
+import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 
@@ -18,9 +8,13 @@ import { Tabs, useRouter } from 'expo-router';
 
 import { AntDesign, Entypo, FontAwesome6, Ionicons } from '@expo/vector-icons';
 
+import logoDarkMode from '@/assets/images/logo-darkmode.png';
 import logo from '@/assets/images/logo.png';
 import SideMenu from '@/shared/components/menu/SideMenu';
 import { AuthContext } from '@/shared/providers/auth/AuthProvider';
+import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
+
+import cx from 'classnames';
 
 const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: BottomTabBarButtonProps) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
@@ -58,6 +52,7 @@ const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: Bottom
 export default function TabLayout() {
   // context
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
 
   // state
   const isLoggedIn = !!user;
@@ -76,12 +71,6 @@ export default function TabLayout() {
    * </pre>
    */
   const router = useRouter();
-  const colorScheme = useColorScheme();
-
-  Appearance.addChangeListener(({ colorScheme }) => {
-    console.log(colorScheme);
-  });
-
 
   // handle
   const openLoginModal = () => {
@@ -93,26 +82,40 @@ export default function TabLayout() {
   };
 
   return (
-    <>
+    <View
+      className={cx('size-full', {
+        'bg-black': theme === 'dark',
+      })}
+    >
       {/* logo */}
-      <View className="relative mt-16 flex h-14 flex-row items-center justify-center gap-2">
+      <View className={cx('relative mt-16 flex h-14 flex-row items-center justify-center gap-2')}>
         <TouchableOpacity onPress={() => router.push('/')}>
-          <Image className="size-10" source={logo} alt="logo" />
+          <Image className="size-10 invert-0" source={theme === 'light' ? logo : logoDarkMode} alt="logo" />
         </TouchableOpacity>
 
         {!isLoggedIn && (
-          <View className="absolute right-4 top-2">
+          <View className="absolute right-4 top-3">
             <TouchableOpacity
-              className="h-8 w-16 items-center justify-center rounded-lg bg-black"
+              className={cx('h-8 w-16 items-center justify-center rounded-lg bg-black', {
+                'bg-black': theme === 'light',
+                'bg-white': theme === 'dark',
+              })}
               onPress={openLoginModal}
             >
-              <Text className="font-bold text-white">로그인</Text>
+              <Text
+                className={cx('font-bold', {
+                  'text-black': theme === 'dark',
+                  'text-white': theme === 'light',
+                })}
+              >
+                로그인
+              </Text>
             </TouchableOpacity>
           </View>
         )}
 
         <TouchableOpacity className="absolute left-4 top-3" onPress={() => setOpenSideMenu(true)}>
-          <Entypo name="menu" size={24} color="black" />
+          <Entypo name="menu" size={24} color={theme === 'light' ? 'black' : 'white'} />
         </TouchableOpacity>
       </View>
 
@@ -225,6 +228,6 @@ export default function TabLayout() {
         </View>
       </Modal>
       <SideMenu open={openSideMenu} onClose={() => setOpenSideMenu(false)} />
-    </>
+    </View>
   );
 }

@@ -69,6 +69,8 @@ export default function AuthProvider({ children }: Readonly<{ children: React.Re
 
   const handleLogout = () => {
     setUser(undefined);
+
+    AsyncStorage.removeItem('user');
   };
 
   // memorize

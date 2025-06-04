@@ -1,8 +1,12 @@
-import { Appearance, Modal, SafeAreaView, Text, TouchableOpacity, View, useColorScheme } from 'react-native';
+import { useContext } from 'react';
+
+import { Modal, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
 import { BlurView } from 'expo-blur';
 
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+
+import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
 
 import cx from 'classnames';
 
@@ -12,23 +16,23 @@ interface AppearanceMenuProps {
 }
 
 export default function SelectAppearanceMenu({ open, onClose }: Readonly<AppearanceMenuProps>) {
-  // hooks
-  const colorScheme = useColorScheme();
+  // context
+  const { preference, onUpdatePreference } = useContext(ThemeContext);
 
   // handle
   const handleClose = () => {
     onClose && onClose();
   };
 
-  const handleChangeScheme = (scheme: 'dark' | 'light' | null) => {
-    Apearance.setColorScheme(scheme);
+  const handleChangeScheme = (scheme: 'dark' | 'light' | 'auto') => {
+    onUpdatePreference(scheme);
   };
 
   return (
     <Modal visible={open} animationType="none" transparent onRequestClose={handleClose}>
       <BlurView
         className="relative flex flex-col items-center justify-center gap-2"
-        intensity={colorScheme === 'dark' ? 0 : 10}
+        intensity={preference === 'dark' ? 0 : 10}
         tint="light"
       >
         {/* outside */}
@@ -49,26 +53,31 @@ export default function SelectAppearanceMenu({ open, onClose }: Readonly<Appeara
               </TouchableOpacity>
             </View>
 
-            <View className="mt-3 flex flex-row items-center justify-center gap-5">
+            <View className="mt-3 flex flex-row items-center justify-center gap-2">
               <TouchableOpacity
                 className={cx(
                   'size-10 items-center justify-center rounded-xl',
-                  colorScheme === 'light' && 'bg-gray-400',
+                  preference === 'light' && 'bg-gray-300',
                 )}
-                disabled={colorScheme === 'light'}
+                disabled={preference === 'light'}
+                onPress={() => handleChangeScheme('light')}
               >
                 <MaterialIcons name="light-mode" size={24} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                className={cx(
-                  'size-10 items-center justify-center rounded-xl',
-                  colorScheme === 'dark' && 'bg-gray-400',
-                )}
+                className={cx('size-10 items-center justify-center rounded-xl', preference === 'dark' && 'bg-gray-300')}
+                disabled={preference === 'dark'}
+                onPress={() => handleChangeScheme('dark')}
               >
                 <MaterialIcons name="dark-mode" size={24} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                className={cx('h-6 w-10 items-center justify-center rounded-xl', !colorScheme && 'bg-gray-500')}
+                className={cx(
+                  'h-10 w-16 items-center justify-center rounded-xl',
+                  preference === 'auto' && 'bg-gray-300',
+                )}
+                disabled={preference === 'auto'}
+                onPress={() => handleChangeScheme('auto')}
               >
                 <Text className="text-lg font-semibold">Auto</Text>
               </TouchableOpacity>

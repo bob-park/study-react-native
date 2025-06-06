@@ -27,11 +27,17 @@ function AnimatedSplashScreen({ children, image }: Readonly<{ children: React.Re
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
   const [isSplashAnimationComplete, setIsSplashAnimationComplete] = useState<boolean>(false);
 
+  // animation 은 number 가 아니기 때문에, 변경해줘야함
+  const rotateValue = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['1080deg', '0deg'],
+  });
+
   // useEffect
   useEffect(() => {
     Animated.timing(animation, {
       toValue: 0,
-      duration: 1_000,
+      duration: 2_000,
       useNativeDriver: true,
     }).start(() => setIsSplashAnimationComplete(true));
   }, []);
@@ -66,7 +72,7 @@ function AnimatedSplashScreen({ children, image }: Readonly<{ children: React.Re
             className="w-[200]"
             style={{
               resizeMode: Constants.expoConfig?.splash?.resizeMode || 'contain',
-              transform: [{ scale: animation }],
+              transform: [{ scale: animation }, { rotate: rotateValue }],
             }}
             source={image}
             alt="splash-image"

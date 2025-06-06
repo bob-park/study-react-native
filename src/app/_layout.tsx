@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 import '@/app/global.css';
 import AuthProvider from '@/shared/providers/auth/AuthProvider';
@@ -12,6 +13,7 @@ function RootLayoutNav() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <StatusBar style="auto" animated />
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="posts" options={{ presentation: 'modal' }} />

@@ -47,6 +47,14 @@
           "cameraPermission": "Allow ${PRODUCT_NAME} to use your camera."
         }
       ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200
+        }
+      ],
       "expo-secure-store"
     ],
     "experiments": {

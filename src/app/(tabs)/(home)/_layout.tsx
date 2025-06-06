@@ -25,11 +25,10 @@ export const MaterialTopTabs = withLayoutContext<
 
 export default function HomeLayout() {
   // context
-  const { user } = useContext(AuthContext);
+  const { user, isLoggedIn } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
   // state
-  const isLoggedIn = !!user;
 
   return (
     <View className="flex size-full flex-row dark:bg-black">

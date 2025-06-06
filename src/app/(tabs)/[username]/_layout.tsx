@@ -38,7 +38,7 @@ export default function UsernameLayout() {
             <Text className="text-2xl font-semibold dark:text-white">{user?.username}</Text>
           </View>
           <View className="">
-            <Text className="text-lg dark:text-white">{user?.id}</Text>
+            <Text className="text-lg dark:text-white">{user?.userId}</Text>
           </View>
         </View>
 

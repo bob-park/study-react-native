@@ -1,16 +1,17 @@
 import { useContext, useRef, useState } from 'react';
 
-import { Animated, Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 
 import { Tabs, useRouter } from 'expo-router';
 
-import { AntDesign, Entypo, FontAwesome6, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 
 import logoDarkMode from '@/assets/images/logo-darkmode.png';
 import logo from '@/assets/images/logo.png';
 import SideMenu from '@/shared/components/menu/SideMenu';
+import LoginModal from '@/shared/components/user/LoginModal';
 import { AuthContext } from '@/shared/providers/auth/AuthProvider';
 import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
 
@@ -49,11 +50,10 @@ const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: Bottom
 
 export default function TabLayout() {
   // context
-  const { user } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
   // state
-  const isLoggedIn = !!user;
   const [isLoginModelOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
 
@@ -192,35 +192,7 @@ export default function TabLayout() {
 
         <Tabs.Screen name="(posts)/[username]/posts/[postId]" options={{ href: null }} />
       </Tabs>
-      <Modal
-        visible={isLoginModelOpen}
-        animationType="slide"
-        presentationStyle="formSheet"
-        onRequestClose={() => setIsLoginModalOpen(false)}
-      >
-        <View className="relative flex size-full flex-col rounded-t-2xl bg-white p-4 shadow-2xl">
-          <View className="">
-            <Text className="text-2xl font-bold">Login Modal</Text>
-          </View>
-
-          <View className="mt-[50%] w-full">
-            <Pressable
-              className="flex flex-row items-center justify-center gap-2 rounded-2xl bg-black p-4"
-              onPress={() => {
-                router.push('/login');
-                closeLoginModal();
-              }}
-            >
-              <FontAwesome6 name="threads" size={28} color="white" />
-              <Text className="text-xl font-semibold text-white">로그인</Text>
-            </Pressable>
-          </View>
-
-          <TouchableOpacity className="absolute right-6 top-6" onPress={closeLoginModal}>
-            <Ionicons name="close" size={24} color="gray" />
-          </TouchableOpacity>
-        </View>
-      </Modal>
+      <LoginModal open={isLoginModelOpen} onClose={() => closeLoginModal()} />
       <SideMenu open={openSideMenu} onClose={() => setOpenSideMenu(false)} />
     </View>
   );

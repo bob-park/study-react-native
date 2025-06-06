@@ -1,26 +1,31 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
 
-import { Alert } from 'react-native';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
+import * as WebBrowser from 'expo-web-browser';
+
+import dayjs from 'dayjs';
+
+const KEY_ACCESS_TOKEN = 'accessToken';
+const KEY_REFRESH_TOKEN = 'refreshToken';
+const KEY_EXPIRED_AT = 'expiredAt';
+
+WebBrowser.maybeCompleteAuthSession();
 
 interface AuthContext {
   user?: User;
-  onLogin: ({ username, password }: { username: string; password: string }) => void;
+  isLoggedIn: boolean;
+  onLoggedIn: (user: User) => void;
   onLogout: () => void;
 }
 
-export const AuthContext = createContext<AuthContext>({ onLogin: () => {}, onLogout: () => {} });
+export const AuthContext = createContext<AuthContext>({ isLoggedIn: false, onLoggedIn: () => {}, onLogout: () => {} });
 
 export default function AuthProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   // state
   const [user, setUser] = useState<User>();
-
-  // hooks
-  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   // useEffect
   useEffect(() => {
@@ -30,51 +35,45 @@ export default function AuthProvider({ children }: Readonly<{ children: React.Re
       }
 
       setUser(JSON.parse(data) as User);
+    });
 
-      // TODO: access Token 체크
+    // TODO: access Token 체크
+    SecureStore.getItemAsync(KEY_EXPIRED_AT).then((data) => {
+      if (!data) {
+        setIsLoggedIn(false);
+        return;
+      }
+
+      const expiredAt = parseInt(data, 0);
+
+      setIsLoggedIn(dayjs.unix(expiredAt).isAfter(dayjs()));
     });
   }, []);
 
   // handle
-  const handleLogin = ({ username, password }: { username: string; password: string }) => {
-    fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          throw new Error(await res.text());
-        }
+  const handleLogin = (user: User) => {
+    setIsLoggedIn(true);
+    setUser(user);
 
-        return res.json();
-      })
-      .then((data) =>
-        Promise.all([
-          SecureStore.setItemAsync('accessToken', data.accessToken),
-          SecureStore.setItemAsync('accessToken', data.refreshToken),
-          AsyncStorage.setItem('user', JSON.stringify(data.user)),
-        ]).then(() => {
-          router.push('/(tabs)');
-          setUser(data.user);
-        }),
-      )
-      .catch((err) => {
-        console.error(err);
-        Alert.alert('Invalid credentials.');
-      });
+    AsyncStorage.setItem('user', JSON.stringify(user));
   };
 
   const handleLogout = () => {
     setUser(undefined);
 
     AsyncStorage.removeItem('user');
+    SecureStore.deleteItemAsync(KEY_ACCESS_TOKEN);
+    SecureStore.deleteItemAsync(KEY_REFRESH_TOKEN);
+    SecureStore.deleteItemAsync(KEY_EXPIRED_AT);
+
+    setIsLoggedIn(false);
   };
 
   // memorize
-  const memorizeValue = useMemo<AuthContext>(() => ({ user, onLogin: handleLogin, onLogout: handleLogout }), [user]);
+  const memorizeValue = useMemo<AuthContext>(
+    () => ({ isLoggedIn, user, onLoggedIn: handleLogin, onLogout: handleLogout }),
+    [user, isLoggedIn],
+  );
 
   return <AuthContext value={memorizeValue}>{children}</AuthContext>;
 }

@@ -17,11 +17,10 @@ interface SideMenuProps {
 
 export default function SideMenu({ open, onClose }: Readonly<SideMenuProps>) {
   // context
-  const { user, onLogout } = useContext(AuthContext);
+  const { user, isLoggedIn, onLogout } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
   // state
-  const isLoggedIn = !!user;
   const [showSelectAppearance, setShowSelectAppearance] = useState<boolean>(false);
 
   // hooks

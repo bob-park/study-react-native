@@ -11,7 +11,7 @@ export default function UserAvatar({ avatar, name }: UserAvatarProps) {
   return (
     <View className="flex size-full items-center justify-center rounded-full">
       <Image
-        className="size-full"
+        className="size-full rounded-full"
         source={
           avatar
             ? {

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, View } from 'react-native';
 
 import { Asset } from 'expo-asset';
+import * as Clipboard from 'expo-clipboard';
 import Constants from 'expo-constants';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,7 +14,9 @@ import logo from '@/assets/images/logo.png';
 import AuthProvider from '@/shared/providers/auth/AuthProvider';
 import ThemeProvider from '@/shared/providers/theme/ThemeProvider';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import cx from 'classnames';
+import { DevToolsBubble } from 'react-native-react-query-devtools';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -119,13 +122,42 @@ function AnimateAppLoader({ children, image }: Readonly<{ children: React.ReactN
 }
 
 function RootLayoutNav() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retryOnMount: true,
+        refetchOnReconnect: true,
+        staleTime: 60 * 1_000,
+        gcTime: 120 * 1_000,
+      },
+    },
+  });
+
+  // handle
+  // Define your copy function based on your platform
+  const handleCopy = async (text: string) => {
+    try {
+      // For Expo:
+      await Clipboard.setStringAsync(text);
+      // OR for React Native CLI:
+      // await Clipboard.setString(text);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   return (
     <AnimateAppLoader image={logo}>
-      <StatusBar style="auto" animated />
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="posts" options={{ presentation: 'modal' }} />
-      </Stack>
+      <QueryClientProvider client={queryClient}>
+        <StatusBar style="auto" animated />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="posts" options={{ presentation: 'modal' }} />
+        </Stack>
+        {__DEV__ && <DevToolsBubble onCopy={handleCopy} queryClient={queryClient} />}
+      </QueryClientProvider>
     </AnimateAppLoader>
   );
 }

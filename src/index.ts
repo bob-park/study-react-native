@@ -84,13 +84,8 @@ if (__DEV__) {
       });
 
       this.get('/posts', (schema, request) => {
-        console.log('user.all', schema.all('user').models);
         const cursor = parseInt((request.queryParams.cursor as string) || '0');
-        const posts = schema.all('post').models.slice(cursor, cursor + 10);
-
-        const users = posts.map((post) => post.user);
-
-        return new Response(200, {}, { posts, users });
+        return schema.all('post').slice(cursor, cursor + 10);
       });
 
       this.get('/posts/:id', (schema, request) => {

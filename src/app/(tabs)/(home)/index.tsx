@@ -1,18 +1,31 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
-import * as WebBrowser from 'expo-web-browser';
+import Post from '@/domain/post/components/Post';
+import { usePosts } from '@/domain/post/query/posts';
+import Loading from '@/shared/components/loading/Loading';
+
+import { FlashList } from '@shopify/flash-list';
 
 export default function Index() {
+  // query
+  const { pages, fetchNextPage, isLoading } = usePosts({});
+  const posts = pages.reduce((acc, current) => acc.concat(current), []);
+
+  // handle
+  const handleEndReached = () => {
+    fetchNextPage();
+  };
+
   return (
     <View className="flex size-full flex-col items-center gap-2 dark:bg-black">
-      <View className="mt-10">
-        <TouchableOpacity
-          className="h-10 w-20 items-center justify-center rounded-2xl bg-gray-300"
-          onPress={() => WebBrowser.openBrowserAsync('https://naver.com')}
-        >
-          <Text>click</Text>
-        </TouchableOpacity>
-      </View>
+      <FlashList
+        className="w-screen"
+        data={posts}
+        renderItem={({ item, index }) => <Post post={item} />}
+        ListFooterComponent={isLoading ? <Loading /> : null}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={2}
+      />
     </View>
   );
 }

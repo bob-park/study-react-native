@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Post from '@/domain/post/components/Post';
 import { usePosts } from '@/domain/post/query/posts';
+import Loading from '@/shared/components/loading/Loading';
 
 export default function Search() {
   // state
@@ -14,9 +15,13 @@ export default function Search() {
   const [searchParams, setSearchParams] = useState<{ text: string }>({ text: '' });
 
   // query
-  const { posts: data } = usePosts(searchParams);
-  const { posts, users } = data;
+  const { pages, fetchNextPage, isLoading } = usePosts(searchParams);
+  const posts = pages.reduce((acc, current) => acc.concat(current), []);
 
+  // handle
+  const handleEndReached = () => {
+    fetchNextPage();
+  };
   // useEffect
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -48,25 +53,22 @@ export default function Search() {
       </View>
 
       {/* result */}
-      <View className="mb-20 w-full">
-        <View className="flex gap-3">
-          <FlatList
-            className="w-full"
-            data={posts}
-            keyExtractor={(post) => `posts_list_item_${post.id}`}
-            renderItem={({ item, index }) => (
-              <Post post={{ ...item, user: users.find((user) => user.id === item.userId) }} />
-            )}
-            keyboardShouldPersistTaps="handled"
-            ListHeaderComponent={
-              <View className="flex w-full flex-col items-center gap-2">
-                <View className="w-full pl-3">
-                  <Text className="font-semibold text-gray-500">Follow suggestions</Text>
-                </View>
+      <View className="mb-24 w-full">
+        <FlatList
+          className="w-full"
+          data={posts}
+          renderItem={({ item, index }) => <Post post={item} />}
+          ListHeaderComponent={
+            <View className="flex w-full flex-col items-center gap-2">
+              <View className="w-full pl-3">
+                <Text className="font-semibold text-gray-500">Follow suggestions</Text>
               </View>
-            }
-          />
-        </View>
+            </View>
+          }
+          ListFooterComponent={isLoading ? <Loading /> : null}
+          onEndReached={handleEndReached}
+          onEndReachedThreshold={2}
+        />
       </View>
     </View>
   );

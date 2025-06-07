@@ -15,7 +15,7 @@ export default function Post({ post }: Readonly<PostProps>) {
     <View className="flex w-full flex-row gap-3 p-2">
       {/* avatar */}
       <View className="size-16 flex-none">
-        <UserAvatar avatar={post.user?.profileImageUrl} name={post.userId} />
+        <UserAvatar avatar={post.user.profileImageUrl} name={post.user.username} />
       </View>
 
       {/* contents */}
@@ -27,12 +27,14 @@ export default function Post({ post }: Readonly<PostProps>) {
               <View className="">
                 <View className="flex flex-col gap-1">
                   <View className="flex flex-row items-center gap-2">
-                    <Text className="text-lg font-semibold dark:text-white">{post.userId}</Text>
+                    <Text className="text-lg font-semibold dark:text-white">{post.user.userId}</Text>
 
                     <MaterialIcons name="verified" size={20} color="#0ea5e9" />
                   </View>
-                  <View className="">
-                    <Text className="text-lg text-gray-500 dark:text-gray-300">{post.userId}</Text>
+                  <View className="w-full">
+                    <Text className="text-lg text-gray-500 dark:text-gray-300" numberOfLines={1} ellipsizeMode="tail">
+                      {post.user.username}
+                    </Text>
                   </View>
                 </View>
               </View>

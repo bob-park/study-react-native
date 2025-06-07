@@ -1,12 +1,34 @@
 import { getPosts } from '@/domain/post/api/posts';
 
-import { useQuery } from '@tanstack/react-query';
+import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+
+const DEFAULT_CURSOR_SIZE = 10;
 
 export function usePosts(searchParams: { text?: string }) {
-  const { data, isLoading } = useQuery<{ posts: Post[]; users: User[] }>({
+  const { data, fetchNextPage, isFetching, hasNextPage } = useInfiniteQuery<
+    Post[],
+    unknown,
+    InfiniteData<Post[]>,
+    QueryKey,
+    { cursor: number }
+  >({
     queryKey: ['posts', searchParams],
-    queryFn: () => getPosts(searchParams),
+    queryFn: ({ pageParam }) => getPosts({ ...searchParams, ...pageParam }),
+    initialPageParam: {
+      cursor: 0,
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length === 0) {
+        return null;
+      }
+
+      const nextCursor = allPages.length * DEFAULT_CURSOR_SIZE;
+
+      return {
+        cursor: nextCursor,
+      };
+    },
   });
 
-  return { posts: data || { posts: [], users: [] }, isLoading };
+  return { pages: data?.pages || ([] as Post[][]), isLoading: isFetching, fetchNextPage, hasNextPage };
 }

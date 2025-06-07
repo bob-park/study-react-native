@@ -5,8 +5,7 @@ interface Post {
   likes: number;
   comments: number;
   reposts: number;
-  userId: string;
-  user?: User;
+  user: User;
 }
 
 

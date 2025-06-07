@@ -8,12 +8,16 @@ import { FlashList } from '@shopify/flash-list';
 
 export default function Index() {
   // query
-  const { pages, fetchNextPage, isLoading } = usePosts({});
+  const { pages, fetchNextPage, isLoading, refetch } = usePosts({});
   const posts = pages.reduce((acc, current) => acc.concat(current), []);
 
   // handle
   const handleEndReached = () => {
     fetchNextPage();
+  };
+
+  const handleRefresh = () => {
+    refetch();
   };
 
   return (
@@ -23,6 +27,8 @@ export default function Index() {
         data={posts}
         renderItem={({ item, index }) => <Post post={item} />}
         ListFooterComponent={isLoading ? <Loading /> : null}
+        refreshing={isLoading}
+        onRefresh={handleRefresh}
         onEndReached={handleEndReached}
         onEndReachedThreshold={2}
       />

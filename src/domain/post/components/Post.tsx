@@ -1,4 +1,4 @@
-import { Animated, Text, TouchableOpacity } from 'react-native';
+import { Animated, FlatList, Image, Text, TouchableOpacity } from 'react-native';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -50,6 +50,21 @@ export default function Post({ post }: Readonly<PostProps>) {
           <View className="mt-2 w-[300px]">
             <Text className="text-pretty text-base dark:text-white">{post.content}</Text>
           </View>
+
+          {/* images */}
+          {post.imageUrls.length > 0 && (
+            <FlatList
+              className="h-32 w-full"
+              data={post.imageUrls}
+              horizontal
+              keyExtractor={(_, index) => `post-${post.id}-item-image-${index}`}
+              renderItem={({ item: uri, index: imageIndex }) => (
+                <View className="relative ml-2 flex h-32 w-32">
+                  <Image className="size-full rounded-2xl" source={{ uri }} alt="thread image" />
+                </View>
+              )}
+            />
+          )}
 
           {/* followers */}
           <View className="mt-3">

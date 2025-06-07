@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FlatList, Text, TextInput, View } from 'react-native';
 
@@ -11,9 +11,22 @@ export default function Search() {
   // state
   const [searchText, setSearchText] = useState<string>('');
 
+  const [searchParams, setSearchParams] = useState<{ text: string }>({ text: '' });
+
   // query
-  const { posts: data } = usePosts();
+  const { posts: data } = usePosts(searchParams);
   const { posts, users } = data;
+
+  // useEffect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setSearchParams((prev) => ({ ...prev, text: searchText }));
+    }, 500);
+
+    return () => {
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, [searchText]);
 
   return (
     <View className="flex size-full flex-col items-center gap-2 dark:bg-black">

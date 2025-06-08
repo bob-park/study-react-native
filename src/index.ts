@@ -60,6 +60,16 @@ if (__DEV__) {
       const users = server.createList('user', 10);
 
       users.forEach((user) => server.createList('post', 5, { user }));
+
+      server.create('user', {
+        id: 'hwpark',
+        uniqueId: 'hwpark',
+        userId: 'hwpark',
+        username: '밥팤',
+        description: faker.lorem.sentence(),
+        profileImageUrl: `https://avatars.githubusercontent.com/u/${Math.floor(Math.random() * 100_000)}?v=4`,
+        isVerified: Math.random() > 0.5,
+      });
     },
     routes() {
       this.passthrough(
@@ -92,6 +102,11 @@ if (__DEV__) {
         const post = schema.find('post', request.params.id);
         const comments = schema.all('post').models.slice(0, 10);
         return new Response(200, {}, { post, comments });
+      });
+
+      // user
+      this.get('/users/:id', (schema, request) => {
+        return schema.find('user', request.params.id);
       });
     },
   });

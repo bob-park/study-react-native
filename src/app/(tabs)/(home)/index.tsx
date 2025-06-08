@@ -1,14 +1,18 @@
 import { View } from 'react-native';
 
+import * as Haptics from 'expo-haptics';
+
 import Post from '@/domain/post/components/Post';
 import { usePosts } from '@/domain/post/query/posts';
 import Loading from '@/shared/components/loading/Loading';
 
 import { FlashList } from '@shopify/flash-list';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Index() {
   // query
-  const { pages, fetchNextPage, isLoading, refetch } = usePosts({});
+  const queryClient = useQueryClient();
+  const { pages, fetchNextPage, isLoading } = usePosts({});
   const posts = pages.reduce((acc, current) => acc.concat(current), []);
 
   // handle
@@ -17,7 +21,9 @@ export default function Index() {
   };
 
   const handleRefresh = () => {
-    refetch();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    queryClient.invalidateQueries({ queryKey: ['posts'] });
   };
 
   return (

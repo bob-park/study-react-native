@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import uuid from 'react-native-uuid';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
@@ -22,7 +23,6 @@ import { AntDesign, Entypo, Feather, MaterialCommunityIcons, Octicons } from '@e
 import UserAvatar from '@/shared/components/user/UserAvatar';
 
 import cx from 'classnames';
-import uuid from 'react-native-uuid';
 
 const dummyTags = [
   'java',

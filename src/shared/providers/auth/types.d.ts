@@ -10,7 +10,7 @@ interface User {
   isVerified?: boolean;
 }
 
-interface UserInfo{
+interface UserInfo {
   sub: string;
-  profile: User
+  profile: User;
 }

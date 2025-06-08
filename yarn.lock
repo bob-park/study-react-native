@@ -1222,9 +1222,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bob-park/prettier-config-bobpark@npm:0.2.1-RC4-2025-0603":
-  version: 0.2.1-RC4-2025-0603
-  resolution: "@bob-park/prettier-config-bobpark@npm:0.2.1-RC4-2025-0603::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.2.1-RC4-2025-0603%2Fddb7c143a9b83c6fb9113b00a803e7bbfb7189af"
+"@bob-park/prettier-config-bobpark@npm:0.2.2-RC2-2025-0608":
+  version: 0.2.2-RC2-2025-0608
+  resolution: "@bob-park/prettier-config-bobpark@npm:0.2.2-RC2-2025-0608::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.2.2-RC2-2025-0608%2F31fb5bfd87b7620e946d306676485247abc18da0"
   dependencies:
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
     eslint-plugin-prettier: "npm:^5.2.1"
@@ -1233,7 +1233,7 @@ __metadata:
   peerDependencies:
     eslint: ">= 8 < 9"
     typescript: ">= 5"
-  checksum: 10c0/67619bd0c32cb61b65b15969714e7a52673f583729160a69d875acd0183e8977f21982d5c63552f8fca779e9e3b4b6742d0e46c4e54ecce14acd24a9122845df
+  checksum: 10c0/8cc8e7ef498939085d732bbcd24bb5ed20a14412acc9fc497c9002848a0656fd9235c668e407205fac9f127f5a3f4fb1e758cefdcc00c1cd864558729c67a2e4
   languageName: node
   linkType: hard
 
@@ -11517,7 +11517,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@bob-park/eslint-config-bobpark": "npm:0.1.3-RC5-2024-0410"
-    "@bob-park/prettier-config-bobpark": "npm:0.2.1-RC4-2025-0603"
+    "@bob-park/prettier-config-bobpark": "npm:0.2.2-RC2-2025-0608"
     "@expo/vector-icons": "npm:^14.1.0"
     "@faker-js/faker": "npm:^9.8.0"
     "@react-native-async-storage/async-storage": "npm:2.1.2"

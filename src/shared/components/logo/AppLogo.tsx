@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import { TouchableOpacity } from 'react-native';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { useRouter } from 'expo-router';
 
@@ -8,8 +9,6 @@ import logoDarkMode from '@/assets/images/logo-darkmode.png';
 import logo from '@/assets/images/logo.png';
 import { RefreshContext } from '@/shared/providers/refresh/RefreshProvider';
 import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
-
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 export default function AppLogo() {
   // context
@@ -21,7 +20,7 @@ export default function AppLogo() {
 
   const rotateStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ rotate: `${pullDownPosition.value * 3}deg` }],
+      transform: [{ rotate: `${pullDownPosition.value * 3 * 2}deg` }],
     };
   });
 

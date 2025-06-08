@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Animated, View } from 'react-native';
+import { DevToolsBubble } from 'react-native-react-query-devtools';
 
 import { Asset } from 'expo-asset';
 import * as Clipboard from 'expo-clipboard';
@@ -9,14 +10,14 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import '@/app/global.css';
 import logo from '@/assets/images/logo.png';
 import AuthProvider from '@/shared/providers/auth/AuthProvider';
 import ThemeProvider from '@/shared/providers/theme/ThemeProvider';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import cx from 'classnames';
-import { DevToolsBubble } from 'react-native-react-query-devtools';
 
 export { ErrorBoundary } from 'expo-router';
 

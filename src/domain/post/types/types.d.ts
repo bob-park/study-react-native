@@ -7,5 +7,3 @@ interface Post {
   reposts: number;
   user: User;
 }
-
-

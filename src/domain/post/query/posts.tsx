@@ -1,6 +1,6 @@
-import { getPosts } from '@/domain/post/api/posts';
-
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+
+import { getPosts } from '@/domain/post/api/posts';
 
 const DEFAULT_CURSOR_SIZE = 10;
 

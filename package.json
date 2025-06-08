@@ -55,7 +55,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@bob-park/eslint-config-bobpark": "0.1.3-RC5-2024-0410",
-    "@bob-park/prettier-config-bobpark": "0.2.1-RC4-2025-0603",
+    "@bob-park/prettier-config-bobpark": "0.2.2-RC2-2025-0608",
     "@faker-js/faker": "^9.8.0",
     "@types/add": "^2",
     "@types/react": "~19.0.10",

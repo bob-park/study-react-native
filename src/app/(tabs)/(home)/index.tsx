@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { ActivityIndicator, PanResponder, View } from 'react-native';
+import { PanResponder, View } from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -12,12 +12,14 @@ import * as Haptics from 'expo-haptics';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import LoadingLottie from '@/assets/lotties/loading.json';
 import Post from '@/domain/post/components/Post';
 import { usePosts } from '@/domain/post/query/posts';
 import Loading from '@/shared/components/loading/Loading';
 import { RefreshContext } from '@/shared/providers/refresh/RefreshProvider';
 
 import { FlashList } from '@shopify/flash-list';
+import LottieView from 'lottie-react-native';
 
 const MAX_REFRESH_SCROLL = 120;
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList<Post>);
@@ -116,7 +118,7 @@ export default function Index() {
     <View className="size-full">
       {isRefreshing && (
         <View className="absolute left-0 top-0 flex h-[60px] w-full flex-col items-center justify-center bg-gray-200 py-6">
-          <ActivityIndicator size="small" />
+          <LottieView style={{ width: 100, height: 100 }} source={LoadingLottie} autoPlay loop />
         </View>
       )}
       <Animated.View

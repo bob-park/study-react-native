@@ -1,8 +1,10 @@
-import { Animated, FlatList, Image, Text, TouchableOpacity } from 'react-native';
+import { Animated, Image, Text, TouchableOpacity } from 'react-native';
 
-import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Feather, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 
 import UserAvatar from '@/shared/components/user/UserAvatar';
+
+import { FlashList } from '@shopify/flash-list';
 
 import View = Animated.View;
 
@@ -55,13 +57,12 @@ export default function Post({ post }: Readonly<PostProps>) {
 
           {/* images */}
           {post.imageUrls.length > 0 && (
-            <FlatList
-              className="h-32 w-full"
+            <FlashList
+              className="w-80"
               data={post.imageUrls}
               horizontal
-              keyExtractor={(_, index) => `post-${post.id}-item-image-${index}`}
               renderItem={({ item: uri, index: imageIndex }) => (
-                <View className="relative ml-2 flex h-32 w-32">
+                <View className="relative ml-2 flex size-64">
                   <Image className="size-full rounded-2xl" source={{ uri }} alt="thread image" />
                 </View>
               )}
@@ -69,8 +70,27 @@ export default function Post({ post }: Readonly<PostProps>) {
           )}
 
           {/* followers */}
-          <View className="mt-3">
-            <Text className="text-lg text-gray-500">449K followers</Text>
+          <View className="mb-2 mt-3">
+            <View className="flex flex-row items-center justify-start gap-6">
+              <View className="flex flex-row items-center justify-center gap-1">
+                <AntDesign name="hearto" size={20} color="gray" />
+                <Text className="text-gray-500 dark:text-gray-300">{post.likes}</Text>
+              </View>
+
+              <View className="flex flex-row items-center justify-center gap-1">
+                <FontAwesome6 name="comments" size={20} color="gray" />
+                <Text className="text-gray-500 dark:text-gray-300">{post.comments}</Text>
+              </View>
+
+              <View className="flex flex-row items-center justify-center gap-1">
+                <AntDesign name="retweet" size={20} color="gray" />
+                <Text className="text-gray-500 dark:text-gray-300">{post.reposts}</Text>
+              </View>
+
+              <View className="flex flex-row items-center justify-center gap-1">
+                <Feather name="send" size={20} color="gray" />
+              </View>
+            </View>
           </View>
         </View>
       </View>

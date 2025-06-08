@@ -2,7 +2,7 @@ import delay from '@/utils/delay';
 
 import ky from 'ky';
 
-export async function getPosts(searchParams: { text?: string; cursor?: number }) {
+export async function getPosts(searchParams: { text?: string; type?: string; cursor?: number }) {
   const result = await ky
     .get('/api/posts', {
       searchParams,

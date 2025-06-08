@@ -14,6 +14,8 @@ if (__DEV__) {
     window.server.shutdown();
   }
 
+  let hwpark;
+
   window.server = createServer({
     models: {
       user: Model.extend({
@@ -61,7 +63,7 @@ if (__DEV__) {
 
       users.forEach((user) => server.createList('post', 5, { user }));
 
-      server.create('user', {
+      hwpark = server.create('user', {
         id: 'hwpark',
         uniqueId: 'hwpark',
         userId: 'hwpark',
@@ -70,6 +72,8 @@ if (__DEV__) {
         profileImageUrl: `https://avatars.githubusercontent.com/u/${Math.floor(Math.random() * 100_000)}?v=4`,
         isVerified: Math.random() > 0.5,
       });
+
+      server.createList('post', 10, { user: hwpark });
     },
     routes() {
       this.passthrough(
@@ -95,7 +99,14 @@ if (__DEV__) {
 
       this.get('/posts', (schema, request) => {
         const cursor = parseInt((request.queryParams.cursor as string) || '0');
-        return schema.all('post').slice(cursor, cursor + 10);
+
+        let posts = schema.all('post');
+
+        if (request.queryParams.type === 'following') {
+          posts = posts.filter((post) => post.user?.id === hwpark?.id);
+        }
+
+        return posts.slice(cursor, cursor + 10);
       });
 
       this.get('/posts/:id', (schema, request) => {

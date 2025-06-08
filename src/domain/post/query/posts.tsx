@@ -4,7 +4,7 @@ import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query'
 
 const DEFAULT_CURSOR_SIZE = 10;
 
-export function usePosts(searchParams: { text?: string }) {
+export function usePosts(searchParams: { text?: string; type?: string }) {
   const { data, fetchNextPage, isFetching, hasNextPage, refetch } = useInfiniteQuery<
     Post[],
     unknown,

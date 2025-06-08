@@ -25,7 +25,7 @@ export const MaterialTopTabs = withLayoutContext<
 
 export default function HomeLayout() {
   // context
-  const { user, isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
   // state
@@ -36,6 +36,7 @@ export default function HomeLayout() {
         <MaterialTopTabs
           screenOptions={{
             lazy: true, // 스와이프 될때, 로딩
+            lazyPreloadDistance: 1, // 바로 옆 탭 정도 로딩
             tabBarStyle: { backgroundColor: 'none' },
             tabBarLabelStyle: { color: theme === 'light' ? 'black' : 'white', fontWeight: 'bold' },
             tabBarIndicatorStyle: { backgroundColor: theme === 'light' ? 'black' : 'white' },

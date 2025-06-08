@@ -2,6 +2,8 @@ import { useContext, useEffect, useRef, useState } from 'react';
 
 import { ActivityIndicator, PanResponder, View } from 'react-native';
 
+import * as Haptics from 'expo-haptics';
+
 import Post from '@/domain/post/components/Post';
 import { usePosts } from '@/domain/post/query/posts';
 import Loading from '@/shared/components/loading/Loading';
@@ -87,6 +89,10 @@ export default function Index() {
   });
 
   // useEffect
+  useEffect(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  }, [isRefreshing]);
+
   useEffect(() => {
     if (!isLoading && isRefreshing) {
       pullDownPosition.set(withTiming(0, { duration: 180 }));

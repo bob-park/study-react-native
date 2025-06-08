@@ -10288,6 +10288,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-toast-message@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "react-native-toast-message@npm:2.3.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/84a4ed66108c7517cfa2e06d6a8a65933ad37d0f21a1ba5674658ad2c8d95a3035c1c7f99e191568d7c5d5328f5aa048e32170b393a90ada2b2bb602f9878d45
+  languageName: node
+  linkType: hard
+
 "react-native-uuid@npm:^2.0.3":
   version: 2.0.3
   resolution: "react-native-uuid@npm:2.0.3"
@@ -11560,6 +11570,7 @@ __metadata:
     react-native-safe-area-context: "npm:^5.4.0"
     react-native-screens: "npm:~4.11.1"
     react-native-svg: "npm:15.11.2"
+    react-native-toast-message: "npm:^2.3.0"
     react-native-uuid: "npm:^2.0.3"
     react-native-web: "npm:~0.20.0"
     react-test-renderer: "npm:19.0.0"

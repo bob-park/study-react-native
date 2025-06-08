@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { usePathname, useRouter } from 'expo-router';
 
@@ -24,6 +25,19 @@ export default function Index() {
     // notFound() 없음
     return <NotFound />;
   }
+
+  // handle
+  const handleAddToastMessage = () => {
+    Toast.hide();
+    Toast.show({
+      type: 'selectedToast',
+      text1: '계좌털이범',
+      text2: `안녕? 나는 너의 계좌에서 ${Math.floor(Math.random() * 100_000).toLocaleString()}원을 훔쳐갔지`,
+      props: {
+        avatar: `https://avatars.githubusercontent.com/u/${Math.floor(Math.random() * 100_000)}?v=4`,
+      },
+    });
+  };
 
   return (
     <View className="flex size-full flex-col items-center gap-2 dark:bg-black">
@@ -56,6 +70,15 @@ export default function Index() {
             onPress={() => router.navigate('/activity/reposts')}
           />
         </ActivityMenu>
+      </View>
+
+      <View className="mt-3">
+        <TouchableOpacity
+          className="h-10 w-24 items-center justify-center rounded-2xl bg-gray-300"
+          onPress={handleAddToastMessage}
+        >
+          <Text className="">Click</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

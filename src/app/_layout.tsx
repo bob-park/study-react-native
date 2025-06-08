@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Animated, View } from 'react-native';
+import { Animated, Text, View } from 'react-native';
 import { DevToolsBubble } from 'react-native-react-query-devtools';
+import Toast, { ToastConfig } from 'react-native-toast-message';
 
 import { Asset } from 'expo-asset';
 import * as Clipboard from 'expo-clipboard';
@@ -14,6 +15,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import '@/app/global.css';
 import logo from '@/assets/images/logo.png';
+import UserAvatar from '@/shared/components/user/UserAvatar';
 import AuthProvider from '@/shared/providers/auth/AuthProvider';
 import ThemeProvider from '@/shared/providers/theme/ThemeProvider';
 
@@ -22,6 +24,30 @@ import cx from 'classnames';
 export { ErrorBoundary } from 'expo-router';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// custom toast
+const toastConfig: ToastConfig = {
+  selectedToast: ({ props, text1, text2 }) => (
+    <View className="mt-4 flex h-24 w-[90%] flex-row items-center gap-2 rounded-2xl border-[1px] border-gray-300 bg-white px-4 py-3 dark:bg-black">
+      <View className="w-16 flex-none">
+        <UserAvatar avatar={props.avatar} name="avatar" />
+      </View>
+
+      <View className="">
+        <View className="flex flex-col items-center gap-2">
+          <View className="w-full">
+            <Text className="text-xl font-bold dark:text-white">{text1}</Text>
+          </View>
+          <View className="w-full">
+            <Text className="text-gray-400 dark:text-gray-300" numberOfLines={1} ellipsizeMode="tail">
+              {text2}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  ),
+};
 
 function AnimatedSplashScreen({ children, image }: Readonly<{ children: React.ReactNode; image: number }>) {
   // ref
@@ -159,6 +185,7 @@ function RootLayoutNav() {
         </Stack>
         {__DEV__ && <DevToolsBubble onCopy={handleCopy} queryClient={queryClient} />}
       </QueryClientProvider>
+      <Toast config={toastConfig} />
     </AnimateAppLoader>
   );
 }

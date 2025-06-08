@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 
-import { Animated, Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 
@@ -8,11 +8,11 @@ import { Tabs, useRouter } from 'expo-router';
 
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 
-import logoDarkMode from '@/assets/images/logo-darkmode.png';
-import logo from '@/assets/images/logo.png';
+import AppLogo from '@/shared/components/logo/AppLogo';
 import SideMenu from '@/shared/components/menu/SideMenu';
 import LoginModal from '@/shared/components/user/LoginModal';
 import { AuthContext } from '@/shared/providers/auth/AuthProvider';
+import RefreshProvider from '@/shared/providers/refresh/RefreshProvider';
 import { ThemeContext } from '@/shared/providers/theme/ThemeProvider';
 
 const AnimatedTabBarButton = ({ children, onPress, style, ...restProps }: BottomTabBarButtonProps) => {
@@ -80,120 +80,120 @@ export default function TabLayout() {
   };
 
   return (
-    <View className="size-full dark:bg-black">
-      {/* logo */}
-      <View className="relative mt-16 flex h-14 flex-row items-center justify-center gap-2">
-        <TouchableOpacity onPress={() => router.push('/')}>
-          <Image className="size-10 invert-0" source={theme === 'light' ? logo : logoDarkMode} alt="logo" />
-        </TouchableOpacity>
+    <RefreshProvider>
+      <View className="size-full dark:bg-black">
+        {/* logo */}
+        <View className="relative mt-16 flex h-14 flex-row items-center justify-center gap-2">
+          <AppLogo />
 
-        {!isLoggedIn && (
-          <View className="absolute right-4 top-3">
-            <TouchableOpacity
-              className="h-8 w-16 items-center justify-center rounded-lg bg-black dark:bg-white"
-              onPress={openLoginModal}
-            >
-              <Text className="font-bold text-white dark:text-black">로그인</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+          {!isLoggedIn && (
+            <View className="absolute right-4 top-3">
+              <TouchableOpacity
+                className="h-8 w-16 items-center justify-center rounded-lg bg-black dark:bg-white"
+                onPress={openLoginModal}
+              >
+                <Text className="font-bold text-white dark:text-black">로그인</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-        <TouchableOpacity className="absolute left-4 top-3" onPress={() => setOpenSideMenu(true)}>
-          <Entypo name="menu" size={24} color={theme === 'light' ? 'black' : 'white'} />
-        </TouchableOpacity>
+          <TouchableOpacity className="absolute left-4 top-3" onPress={() => setOpenSideMenu(true)}>
+            <Entypo name="menu" size={24} color={theme === 'light' ? 'black' : 'white'} />
+          </TouchableOpacity>
+        </View>
+
+        {/* tabs */}
+        <Tabs
+          backBehavior="history" // default 가 initial route 이기 때문에 뒤로가기 하면 home 으로 감
+          screenOptions={{
+            headerShown: false,
+            tabBarLabel: () => null,
+            tabBarButton: (props) => <AnimatedTabBarButton {...props} />,
+            tabBarStyle: { backgroundColor: 'none' },
+          }}
+        >
+          <Tabs.Screen
+            name="(home)"
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <Entypo name="home" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
+              ),
+            }}
+          />
+
+          <Tabs.Screen
+            name="search"
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <Ionicons name="search" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="add"
+            listeners={{
+              tabPress: (e) => {
+                e.preventDefault();
+
+                if (isLoggedIn) {
+                  router.navigate('/posts');
+                } else {
+                  openLoginModal();
+                }
+              },
+            }}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <Ionicons name="add" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="activity"
+            listeners={{
+              tabPress: (e) => {
+                if (!isLoggedIn) {
+                  e.preventDefault();
+                  openLoginModal();
+                }
+              },
+            }}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <AntDesign
+                  name={focused ? 'heart' : 'hearto'}
+                  size={24}
+                  color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'}
+                />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="[username]"
+            listeners={{
+              tabPress: (e) => {
+                if (!isLoggedIn) {
+                  e.preventDefault();
+                  openLoginModal();
+                }
+              },
+            }}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <Ionicons
+                  name={focused ? 'person' : 'person-outline'}
+                  size={24}
+                  color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'}
+                />
+              ),
+            }}
+          />
+
+          <Tabs.Screen name="(posts)/[username]/posts/[postId]" options={{ href: null }} />
+        </Tabs>
+        <LoginModal open={isLoginModelOpen} onClose={() => closeLoginModal()} />
+        <SideMenu open={openSideMenu} onClose={() => setOpenSideMenu(false)} />
       </View>
-
-      {/* tabs */}
-      <Tabs
-        backBehavior="history" // default 가 initial route 이기 때문에 뒤로가기 하면 home 으로 감
-        screenOptions={{
-          headerShown: false,
-          tabBarLabel: () => null,
-          tabBarButton: (props) => <AnimatedTabBarButton {...props} />,
-          tabBarStyle: { backgroundColor: 'none' },
-        }}
-      >
-        <Tabs.Screen
-          name="(home)"
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <Entypo name="home" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
-            ),
-          }}
-        />
-
-        <Tabs.Screen
-          name="search"
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <Ionicons name="search" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="add"
-          listeners={{
-            tabPress: (e) => {
-              e.preventDefault();
-
-              if (isLoggedIn) {
-                router.navigate('/posts');
-              } else {
-                openLoginModal();
-              }
-            },
-          }}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <Ionicons name="add" size={24} color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="activity"
-          listeners={{
-            tabPress: (e) => {
-              if (!isLoggedIn) {
-                e.preventDefault();
-                openLoginModal();
-              }
-            },
-          }}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <AntDesign
-                name={focused ? 'heart' : 'hearto'}
-                size={24}
-                color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="[username]"
-          listeners={{
-            tabPress: (e) => {
-              if (!isLoggedIn) {
-                e.preventDefault();
-                openLoginModal();
-              }
-            },
-          }}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name={focused ? 'person' : 'person-outline'}
-                size={24}
-                color={focused ? (theme === 'light' ? 'black' : 'white') : 'gray'}
-              />
-            ),
-          }}
-        />
-
-        <Tabs.Screen name="(posts)/[username]/posts/[postId]" options={{ href: null }} />
-      </Tabs>
-      <LoginModal open={isLoginModelOpen} onClose={() => closeLoginModal()} />
-      <SideMenu open={openSideMenu} onClose={() => setOpenSideMenu(false)} />
-    </View>
+    </RefreshProvider>
   );
 }

@@ -27,6 +27,7 @@ const discovery = {
 
 const redirectUri = makeRedirectUri({
   scheme: 'studyreactnative',
+  native: 'studyreactnative://callback',
 });
 
 interface LoginModalProps {
@@ -37,6 +38,8 @@ interface LoginModalProps {
 export default function LoginModal({ open, onClose }: Readonly<LoginModalProps>) {
   // context
   const { onLoggedIn } = useContext(AuthContext);
+
+  console.log(redirectUri);
 
   // hooks
   const [request, response, promptAsync] = useAuthRequest(

@@ -41,17 +41,24 @@ export default function NotificationProvider({ children }: Readonly<{ children: 
 
   // useEffect
   useEffect(() => {
-    if (!token) {
-      handleInit();
-    }
-
     SecureStore.getItemAsync(KEY_NOTIFICATION_TOKEN).then((data) => {
       if (!data) {
+        // init
+        handleInit();
+
         return;
       }
 
       handleUpdateToken(data);
     });
+  }, []);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    return () => {};
   }, [token]);
 
   // handle
@@ -63,17 +70,22 @@ export default function NotificationProvider({ children }: Readonly<{ children: 
       return Linking.openSettings();
     }
 
-    const projectId = Constants.expoConfig?.extra?.esp?.projectId ?? Constants.easConfig?.projectId;
+    if (!Device.isDevice) {
+      console.warn('is not device...');
+      return;
+    }
 
-    console.log('projectId', projectId);
+    const projectId = Constants.expoConfig?.extra?.esp?.projectId ?? Constants.easConfig?.projectId;
 
     const token = await Notifications.getExpoPushTokenAsync({
       projectId,
-    });
+    })
+      .then((data) => data.data)
+      .catch((err) => console.error(err));
 
-    console.log('expoPushToken', token.data);
+    console.log('expoPushToken', token);
 
-    handleUpdateToken(token.data);
+    handleUpdateToken(token || '');
   };
 
   const handleUpdateToken = (token: string) => {
@@ -83,17 +95,15 @@ export default function NotificationProvider({ children }: Readonly<{ children: 
   };
 
   const handleSendNotification = ({ title, description }: { title: string; description: string }) => {
-    if (!token || !Device.isDevice) {
-      // 디바이스가 아니거나 토큰이 없는 경우 로컬 푸시 알림 보내기
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title,
-          body: description,
-        },
-        trigger: null, // 즉시 알림
-      });
-      return;
-    }
+    // 디바이스가 아니거나 토큰이 없는 경우 로컬 푸시 알림 보내기
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title,
+        body: description,
+      },
+      trigger: null, // 즉시 알림
+    });
+    return;
   };
 
   // memorize

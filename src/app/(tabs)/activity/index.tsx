@@ -1,14 +1,21 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { useContext, useState } from 'react';
+
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-import * as Notifications from 'expo-notifications';
 import { usePathname, useRouter } from 'expo-router';
 
 import NotFound from '@/app/+not-found';
-
-import ActivityMenu, { ActivityMenuItem } from './_components/Menu';
+import ActivityMenu, { ActivityMenuItem } from '@/shared/components/menu/ActivityMenu';
+import { NotificationContext } from '@/shared/providers/notification/NotificationProvider';
 
 export default function Index() {
+  // context
+  const { onSendNotification } = useContext(NotificationContext);
+
+  // state
+  const [remoteToken, setRemoteToken] = useState<string>('');
+
   // hooks
   const router = useRouter();
   const pathname = usePathname();
@@ -41,12 +48,21 @@ export default function Index() {
   };
 
   const handlePushNotification = () => {
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: '이것은 알림이다.',
-        body: '테스트를 하는것이다',
-      },
-      trigger: null,
+    onSendNotification({
+      title: '이것은 알림이여',
+      description: '이것은 테스트하는 것이여',
+    });
+  };
+
+  const handleRemotePushNotification = () => {
+    if (!remoteToken) {
+      return;
+    }
+
+    onSendNotification({
+      to: remoteToken,
+      title: '이게 뭐여?',
+      description: '이것은 원격 푸시 알림이여',
     });
   };
 
@@ -83,7 +99,7 @@ export default function Index() {
         </ActivityMenu>
       </View>
 
-      <View className="mt-3 flex flex-col items-center justify-center gap-5">
+      <View className="mt-3 flex w-full flex-col items-center justify-center gap-5">
         <TouchableOpacity
           className="h-10 w-24 items-center justify-center rounded-2xl bg-gray-300"
           onPress={handleAddToastMessage}
@@ -97,6 +113,26 @@ export default function Index() {
         >
           <Text className="">Push Notification</Text>
         </TouchableOpacity>
+
+        <View className="flex w-full flex-col items-center gap-3">
+          <View className="w-full px-10">
+            <TextInput
+              className="w-full dark:text-white"
+              multiline
+              placeholder="token"
+              placeholderTextColor="gray"
+              value={remoteToken}
+              onChangeText={(e) => setRemoteToken(e)}
+            />
+          </View>
+
+          <TouchableOpacity
+            className="h-10 w-56 items-center justify-center rounded-2xl bg-gray-300"
+            onPress={handleRemotePushNotification}
+          >
+            <Text className="">Remote Push Notification</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

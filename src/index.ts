@@ -86,7 +86,7 @@ if (__DEV__) {
       this.post('/posts', (schema, request) => {
         const { posts } = JSON.parse(request.requestBody);
 
-        posts.forEach((post: any) => {
+        posts.forEach((post) => {
           schema.create('post', {
             content: post.content,
             imageUrls: post.imageUrls,

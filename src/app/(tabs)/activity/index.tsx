@@ -1,6 +1,7 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
+import * as Notifications from 'expo-notifications';
 import { usePathname, useRouter } from 'expo-router';
 
 import NotFound from '@/app/+not-found';
@@ -39,6 +40,16 @@ export default function Index() {
     });
   };
 
+  const handlePushNotification = () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: '이것은 알림이다.',
+        body: '테스트를 하는것이다',
+      },
+      trigger: null,
+    });
+  };
+
   return (
     <View className="flex size-full flex-col items-center gap-2 dark:bg-black">
       <View className="mt-3 w-full border-b-[1px] border-gray-300 pb-2">
@@ -72,12 +83,19 @@ export default function Index() {
         </ActivityMenu>
       </View>
 
-      <View className="mt-3">
+      <View className="mt-3 flex flex-col items-center justify-center gap-5">
         <TouchableOpacity
           className="h-10 w-24 items-center justify-center rounded-2xl bg-gray-300"
           onPress={handleAddToastMessage}
         >
           <Text className="">Click</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="h-10 w-36 items-center justify-center rounded-2xl bg-gray-300"
+          onPress={handlePushNotification}
+        >
+          <Text className="">Push Notification</Text>
         </TouchableOpacity>
       </View>
     </View>

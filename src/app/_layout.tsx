@@ -17,6 +17,7 @@ import '@/app/global.css';
 import logo from '@/assets/images/logo.png';
 import UserAvatar from '@/shared/components/user/UserAvatar';
 import AuthProvider from '@/shared/providers/auth/AuthProvider';
+import NotificationProvider from '@/shared/providers/notification/NotificationProvider';
 import ThemeProvider from '@/shared/providers/theme/ThemeProvider';
 
 import cx from 'classnames';
@@ -176,17 +177,19 @@ function RootLayoutNav() {
   };
 
   return (
-    <AnimateAppLoader image={logo}>
-      <QueryClientProvider client={queryClient}>
-        <StatusBar style="auto" animated />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="posts" options={{ presentation: 'modal' }} />
-        </Stack>
-        {__DEV__ && <DevToolsBubble onCopy={handleCopy} queryClient={queryClient} />}
-      </QueryClientProvider>
-      <Toast config={toastConfig} />
-    </AnimateAppLoader>
+    <NotificationProvider>
+      <AnimateAppLoader image={logo}>
+        <QueryClientProvider client={queryClient}>
+          <StatusBar style="auto" animated />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="posts" options={{ presentation: 'modal' }} />
+          </Stack>
+          {__DEV__ && <DevToolsBubble onCopy={handleCopy} queryClient={queryClient} />}
+        </QueryClientProvider>
+        <Toast config={toastConfig} />
+      </AnimateAppLoader>
+    </NotificationProvider>
   );
 }
 

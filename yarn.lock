@@ -2696,13 +2696,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/add@npm:^2":
-  version: 2.0.3
-  resolution: "@types/add@npm:2.0.3"
-  checksum: 10c0/d18841b43d3799f69db0bdae380d19d05f43b716315c5bfd4d6c1b3467bada2644eab8c04bb5afdb94bba87604da06d466f22fe30df6bcf0518c373593bb474a
-  languageName: node
-  linkType: hard
-
 "@types/babel__core@npm:^7.1.14":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -9400,16 +9393,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-check-updates@npm:^18.0.1":
-  version: 18.0.1
-  resolution: "npm-check-updates@npm:18.0.1"
-  bin:
-    ncu: build/cli.js
-    npm-check-updates: build/cli.js
-  checksum: 10c0/0f4f8c26e8a51a413ee724fe76f0860bd360e0c096a52e928916ef6fe3ff0c2ea0f346ca8d291a43f46a269d05450e2a879fed8aa11871f73970d5f9dfdd162a
-  languageName: node
-  linkType: hard
-
 "npm-package-arg@npm:^11.0.0":
   version: 11.0.3
   resolution: "npm-package-arg@npm:11.0.3"
@@ -11728,7 +11711,6 @@ __metadata:
     "@react-navigation/native": "npm:^7.1.6"
     "@shopify/flash-list": "npm:^2.0.0-rc.4"
     "@tanstack/react-query": "npm:^5.80.6"
-    "@types/add": "npm:^2"
     "@types/react": "npm:~19.0.10"
     classnames: "npm:^2.5.1"
     dayjs: "npm:^1.11.13"
@@ -11757,7 +11739,6 @@ __metadata:
     lottie-react-native: "npm:^7.2.2"
     miragejs: "npm:^0.1.48"
     nativewind: "npm:^4.1.23"
-    npm-check-updates: "npm:^18.0.1"
     react: "npm:19.0.0"
     react-dom: "npm:19.0.0"
     react-native: "npm:0.79.2"
